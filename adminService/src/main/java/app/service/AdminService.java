@@ -31,8 +31,7 @@ public class AdminService {
     public AdminDTO save(Admin admin) throws Exception {
         try {
             Admin a = adminRepository.save(admin);
-            AdminDTO adminDTO = new AdminDTO(a);
-            return adminDTO;
+            return new AdminDTO(a);
         }
         catch (Exception e){
             throw  new Exception(e.getMessage());

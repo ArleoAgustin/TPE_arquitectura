@@ -72,7 +72,7 @@ public class AdminControllerJPA {
     public ResponseEntity<?> updateAdmin(@PathVariable Long id_admin, @RequestBody Admin updateAdmin){
 
         try {
-            return ResponseEntity.status(HttpStatus.OK).body(adminService.update(id_admin,updateAdmin))
+            return ResponseEntity.status(HttpStatus.OK).body(adminService.update(id_admin,updateAdmin));
         }
         catch (Exception e){
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Error al actualizar el administrador");
