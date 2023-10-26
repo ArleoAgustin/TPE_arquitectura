@@ -1,10 +1,13 @@
 package app.service;
 
 import app.DTO.AdminDTO;
+import app.DTO.TariffDTO;
 import app.model.classs.Maintenance;
 import app.model.classs.Scooter;
 import app.model.entities.Admin;
+import app.model.entities.Tariff;
 import app.repository.AdminRepository;
+import app.repository.TariffRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.*;
@@ -80,8 +83,8 @@ public class AdminService {
         );
         return response;
     }
-
-    private ResponseEntity addScooterToMaintenance(Long id_scooter){
+/*
+    private ResponseEntity addScooterToMaintenance(Long id_scooter){    //le pega a scooter para actualizar el estado
 
         HttpHeaders headers = new HttpHeaders();
         Maintenance newMaintenace = new Maintenance();
@@ -92,14 +95,14 @@ public class AdminService {
 
         HttpEntity<Maintenance> requestEntity = new HttpEntity<>(newMaintenace, headers);
         ResponseEntity<String> response = restTemplate.exchange(
-                "http://localhost:8085/maintenance/add",
-                HttpMethod.POST,
+                "http://localhost:8085/scooter/addMaintenance/" + id_scooter,
+                HttpMethod.PUT,
                 requestEntity,
                 String.class
         );
         return response;
     }
-
+*/
     public ResponseEntity deleteScooter(Long id_scooter){
 
         HttpHeaders headers = new HttpHeaders();
@@ -132,7 +135,7 @@ public class AdminService {
         return response;
     }
 
-    public ResponseEntity setScooterToMaintenance(Long id_scooter){
+    public ResponseEntity addScooterToMaintenance(Long id_scooter){
 
         HttpHeaders headers = new HttpHeaders();
         HttpEntity<Void> requestEntity = new HttpEntity<>(headers);
@@ -145,9 +148,8 @@ public class AdminService {
         );
         if (response.getStatusCode().is2xxSuccessful()){
             Scooter scooter = response.getBody();
-            if(scooter.getStatus().equals("disponible")){
-                this.addScooterToMaintenance(id_scooter);
-                scooter.setStatus("en mantenimiento");
+            if(scooter.getStatus().equals("D")){    //D de disponible
+                scooter.setStatus("M");         //m de mantenimiento
                 HttpEntity<Scooter> requestEntity2 = new HttpEntity<>(scooter, headers);
                 ResponseEntity<Scooter> response2 = restTemplate.exchange(
                         "http://localhost:8083/scooters/update/" + id_scooter,
@@ -162,6 +164,39 @@ public class AdminService {
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body("No se pudo establecer el monopatin en mantenimiento");
 
     }
+
+
+    public ResponseEntity removeScooterOfMaintenance(Long id_scooter){
+
+        HttpHeaders headers = new HttpHeaders();
+        HttpEntity<Void> requestEntity = new HttpEntity<>(headers);
+
+        ResponseEntity<Scooter> response = restTemplate.exchange(
+                "http://localhost:8083/scooters/"+ id_scooter,
+                HttpMethod.GET,
+                requestEntity,
+                new ParameterizedTypeReference<Scooter>() {}
+        );
+        if (response.getStatusCode().is2xxSuccessful()){
+            Scooter scooter = response.getBody();
+            if(scooter.getStatus().equals("M")){    //M de mantenimiento
+                scooter.setStatus("D");         //D de de disponible
+                HttpEntity<Scooter> requestEntity2 = new HttpEntity<>(scooter, headers);
+                ResponseEntity<Scooter> response2 = restTemplate.exchange(
+                        "http://localhost:8083/scooters/update/" + id_scooter,
+                        HttpMethod.PUT,
+                        requestEntity2,
+                        new ParameterizedTypeReference<Scooter>() {
+                        }
+                );
+                return response2;
+            }
+        }
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body("No se pudo establecer el monopatin en mantenimiento");
+
+    }
+
+    
 
 
 

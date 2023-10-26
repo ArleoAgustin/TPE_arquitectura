@@ -14,9 +14,6 @@ public class Tariff {
     private Long id;
 
     @Column
-    private String key;
-
-    @Column
     private Double value;
 
     @Column
@@ -28,8 +25,7 @@ public class Tariff {
     public Tariff() {
     }
 
-    public Tariff(String key, Double value, Double valuePauseExt, Date effectiveDate) {
-        this.key = key;
+    public Tariff(Double value, Double valuePauseExt, Date effectiveDate) {
         this.value = value;
         this.valuePauseExt = valuePauseExt;
         this.effectiveDate = effectiveDate;

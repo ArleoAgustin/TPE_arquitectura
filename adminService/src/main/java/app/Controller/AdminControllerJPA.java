@@ -3,6 +3,7 @@ package app.Controller;
 import app.DTO.AdminDTO;
 import app.model.classs.Scooter;
 import app.model.entities.Admin;
+import app.model.entities.Tariff;
 import app.service.AdminService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -28,9 +29,14 @@ public class AdminControllerJPA {
         return ResponseEntity.status(HttpStatus.OK).body(adminService.getScooterInMaintenance());
     }
 
-    @PostMapping("/addScooterMaintenance/{id_scooter}")
-    public ResponseEntity<ResponseEntity> addScooter(@PathVariable Long id_scooter){
-        return ResponseEntity.status(HttpStatus.OK).body(adminService.setScooterToMaintenance(id_scooter));
+    @PutMapping("/addScooterMaintenance/{id_scooter}")
+    public ResponseEntity<ResponseEntity> addScooterToMaintenance(@PathVariable Long id_scooter){
+        return ResponseEntity.status(HttpStatus.OK).body(adminService.addScooterToMaintenance(id_scooter));
+    }
+
+    @PutMapping("/removeScooterMaintenance/{id_scooter}")
+    public ResponseEntity<ResponseEntity> removeScooterToMaintenance(@PathVariable Long id_scooter){
+        return ResponseEntity.status(HttpStatus.OK).body(adminService.removeScooterOfMaintenance(id_scooter));
     }
 
     @DeleteMapping("/scooter/{scooter_id}")
@@ -39,7 +45,7 @@ public class AdminControllerJPA {
     }
 
     @PostMapping("/addScooter")
-    public ResponseEntity<?> addAdmin(@RequestBody Scooter scooter){
+    public ResponseEntity<?> addScooter(@RequestBody Scooter scooter){
         try{
             return ResponseEntity.status(HttpStatus.OK).body(adminService.addScooter(scooter));
         }
@@ -73,6 +79,18 @@ public class AdminControllerJPA {
 
         try {
             return ResponseEntity.status(HttpStatus.OK).body(adminService.update(id_admin,updateAdmin));
+        }
+        catch (Exception e){
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Error al actualizar el administrador");
+        }
+
+    }
+
+    @PutMapping("/modifyAvaibleAccount/{id_user}")
+    public ResponseEntity<?> modifyAvaibleAccount(@PathVariable Long id_user, @RequestBody boolean avaible){
+
+        try {
+            return ResponseEntity.status(HttpStatus.OK).body(adminService.modifyAvaibleAccount(id_user,avaible));
         }
         catch (Exception e){
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Error al actualizar el administrador");
