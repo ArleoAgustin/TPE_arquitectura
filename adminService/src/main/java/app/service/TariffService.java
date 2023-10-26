@@ -15,11 +15,10 @@ public class TariffService {
     private final TariffRepository tariffRepository;
     private final RestTemplate restTemplate;
 
-    public ResponseEntity save(Tariff tariff) throws Exception {    //verificar
+    public ResponseEntity<?> save(Tariff tariff) throws Exception {    //verificar
         try {
-            tariffRepository.deleteAll();       //elimina todas las tarifas existentes y deja la nueva
             tariffRepository.save(tariff);
-            return ResponseEntity.ok("Tarifa actualizada");
+            return ResponseEntity.ok("Tarifa agregada");
         }
         catch (Exception e){
             throw  new Exception(e.getMessage());
