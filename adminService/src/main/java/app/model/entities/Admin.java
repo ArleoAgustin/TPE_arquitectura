@@ -18,7 +18,6 @@ public class Admin {
     private String nombre;
 
     @ManyToOne
-    @Column(nullable = false)
     @JoinColumn(name = "id_role")
     private Role rol;
 

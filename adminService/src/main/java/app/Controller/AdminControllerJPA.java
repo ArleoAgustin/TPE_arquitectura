@@ -93,25 +93,21 @@ public class AdminControllerJPA {
 
     @PutMapping("/{id_admin}")
     public ResponseEntity<?> updateAdmin(@PathVariable Long id_admin, @RequestBody Admin updateAdmin){
-
         try {
             return ResponseEntity.status(HttpStatus.OK).body(adminService.update(id_admin,updateAdmin));
         }
         catch (Exception e){
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Error al actualizar el administrador");
         }
-
     }
 
     @PutMapping("/modifyAvaibleAccount/{id_user}")
     public ResponseEntity<?> modifyAvaibleAccount(@PathVariable Long id_user, @RequestBody boolean avaible){
-
         try {
-            return ResponseEntity.status(HttpStatus.OK).body(adminService.modifyAvaibleAccount(id_user,avaible));
+            return ResponseEntity.status(HttpStatus.OK).body(adminService.avaibleUserAccount(id_user,avaible));
         }
         catch (Exception e){
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Error al actualizar el administrador");
         }
-
     }
 }
