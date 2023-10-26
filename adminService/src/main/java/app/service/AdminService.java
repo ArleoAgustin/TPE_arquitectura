@@ -4,6 +4,7 @@ import app.DTO.AdminDTO;
 import app.DTO.TariffDTO;
 import app.model.classs.Maintenance;
 import app.model.classs.Scooter;
+import app.model.classs.User;
 import app.model.entities.Admin;
 import app.model.entities.Tariff;
 import app.repository.AdminRepository;
@@ -26,10 +27,14 @@ public class AdminService {
     private final AdminRepository adminRepository;
     private final RestTemplate restTemplate;
 
+//obtiene todos los admin
+
     @Transactional(readOnly = true)
     public List<AdminDTO> findAll(){
         return this.adminRepository.findAll().stream().map(AdminDTO::new).toList();
     }
+
+//crea un admin nuevo
 
     public AdminDTO save(Admin admin) throws Exception {
         try {
@@ -40,6 +45,8 @@ public class AdminService {
             throw  new Exception(e.getMessage());
         }
     }
+
+//actualiza los datos de un administrador
 
     @Transactional
     public AdminDTO update(Long idAdmin, Admin updateAdmin)throws Exception{
@@ -61,6 +68,8 @@ public class AdminService {
         }
     }
 
+//elimina un administrador
+
     @Transactional
     public boolean delete(Long id){
         if (adminRepository.existsById(id)){
@@ -69,6 +78,8 @@ public class AdminService {
         }
         return false;
     }
+
+//agrega un monopatin
 
     public ResponseEntity addScooter(Scooter scooter){
 
@@ -103,6 +114,9 @@ public class AdminService {
         return response;
     }
 */
+
+//elimina un monopatin
+
     public ResponseEntity deleteScooter(Long id_scooter){
 
         HttpHeaders headers = new HttpHeaders();
@@ -120,6 +134,8 @@ public class AdminService {
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body("No se pudo eliminar el monopatin");
     }
 
+//obtiene todos los monopatines en manteminiento
+
     public ResponseEntity getScooterInMaintenance(){
 
         HttpHeaders headers = new HttpHeaders();
@@ -135,6 +151,8 @@ public class AdminService {
         return response;
     }
 
+//agrega un monopatin a mantenimiento
+
     public ResponseEntity addScooterToMaintenance(Long id_scooter){
 
         HttpHeaders headers = new HttpHeaders();
@@ -148,8 +166,8 @@ public class AdminService {
         );
         if (response.getStatusCode().is2xxSuccessful()){
             Scooter scooter = response.getBody();
-            if(scooter.getStatus().equals("D")){    //D de disponible
-                scooter.setStatus("M");         //m de mantenimiento
+            if(scooter.getStatus() == 'D'){    //D de disponible
+                scooter.setStatus('M');         //m de mantenimiento
                 HttpEntity<Scooter> requestEntity2 = new HttpEntity<>(scooter, headers);
                 ResponseEntity<Scooter> response2 = restTemplate.exchange(
                         "http://localhost:8083/scooters/update/" + id_scooter,
@@ -165,6 +183,7 @@ public class AdminService {
 
     }
 
+//saca un monopatin de mantenimiento
 
     public ResponseEntity removeScooterOfMaintenance(Long id_scooter){
 
@@ -179,8 +198,8 @@ public class AdminService {
         );
         if (response.getStatusCode().is2xxSuccessful()){
             Scooter scooter = response.getBody();
-            if(scooter.getStatus().equals("M")){    //M de mantenimiento
-                scooter.setStatus("D");         //D de de disponible
+            if(scooter.getStatus() == 'M'){    //M de mantenimiento
+                scooter.setStatus('D');         //D de de disponible
                 HttpEntity<Scooter> requestEntity2 = new HttpEntity<>(scooter, headers);
                 ResponseEntity<Scooter> response2 = restTemplate.exchange(
                         "http://localhost:8083/scooters/update/" + id_scooter,
@@ -196,8 +215,48 @@ public class AdminService {
 
     }
 
-    
+//modifica la disponibilidad de la cuenta de un determinado usuario
 
+    public ResponseEntity modifyAvaibleAccount(Long id_user, boolean avaible){
+
+        HttpHeaders headers = new HttpHeaders();
+        HttpEntity<Void> requestEntity = new HttpEntity<>(headers);
+
+        ResponseEntity<User> response = restTemplate.exchange(
+                "http://localhost:8080/users/"+ id_user,
+                HttpMethod.GET,
+                requestEntity,
+                new ParameterizedTypeReference<User>() {}
+        );
+        if (response.getStatusCode().is2xxSuccessful()){
+            User user = response.getBody();
+            user.setAvaibleAccount(avaible);    //se setea el estado de la cuenta
+            HttpEntity<User> requestEntity2 = new HttpEntity<>(user, headers);
+            ResponseEntity<User> response2 = restTemplate.exchange(
+                    "http://localhost:8080/users/update/" + id_user,
+                    HttpMethod.PUT,
+                    requestEntity2,
+                    new ParameterizedTypeReference<User>() {
+                    }
+            );
+            return response2;
+        }
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body("No se pudo modificar el estado de la cuenta");
+    }
+
+    public ResponseEntity getScootersByTravelsInYear(int numTravels, String year){
+
+        HttpHeaders headers = new HttpHeaders();
+        HttpEntity<Void> requestEntity = new HttpEntity<>(headers);
+        ResponseEntity<List<Scooter>> response = restTemplate.exchange(
+                "http://localhost:8083/scooters/getByTravelsInYear/"+ numTravels + "/" + year,
+                HttpMethod.GET,
+                requestEntity,
+                new ParameterizedTypeReference<List<Scooter>>() {}
+        );
+        headers.setContentType(MediaType.APPLICATION_JSON);
+        return response;
+    }
 
 
 }
