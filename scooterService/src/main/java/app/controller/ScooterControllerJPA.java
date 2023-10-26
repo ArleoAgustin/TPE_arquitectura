@@ -17,54 +17,47 @@ public class ScooterControllerJPA {
 
     private final ScooterService scooterService;
 
-
     @GetMapping("")
-    public ResponseEntity<ResponseEntity> findAll() {
+    public ResponseEntity<?> findAll() {
         List<Scooter> scooterList = this.scooterService.findAll();
         if (scooterList.isEmpty()){
-            return ResponseEntity.status(204).body((ResponseEntity)scooterList);
+            return ResponseEntity.status(204).build();
         }
-        return ResponseEntity.status(HttpStatus.OK).body((ResponseEntity)scooterList);
+        return ResponseEntity.status(HttpStatus.OK).body(scooterList);
     }
 
-    @GetMapping("/scooter/inMaintenance")
-    public ResponseEntity<ResponseEntity> getScooterinMaintenance(){
-        return ResponseEntity.status(HttpStatus.OK).body((ResponseEntity) scooterService.getScooterInMaintenance());
-    }
-/*
-
-    @PutMapping("/setPrice")
-    public ResponseEntity<ResponseEntity> setPrice(@PathVariable Tariff tariff){
-        return ResponseEntity.status(HttpStatus.OK).body(adminService.setNewTariff(tariff));
+    @GetMapping("/inMaintenance")
+    public ResponseEntity<?> getScooterinMaintenance(){
+        return ResponseEntity.status(HttpStatus.OK).body(scooterService.getScooterInMaintenance());
     }
 
     @PutMapping("/addScooterMaintenance/{id_scooter}")
-    public ResponseEntity<ResponseEntity> addScooterToMaintenance(@PathVariable Long id_scooter){
-        return ResponseEntity.status(HttpStatus.OK).body(adminService.addScooterToMaintenance(id_scooter));
+    public ResponseEntity<?> addScooterToMaintenance(@PathVariable Long id_scooter){
+        Scooter isChanged = (Scooter) scooterService.addScooterToMaintenance(id_scooter);
+        if(isChanged != null){
+            return ResponseEntity.status(HttpStatus.OK).build();
+        }
+        else return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("no se pudo agregar a mantenimiento");
     }
+    /*
+        @GetMapping("/getByTravelsInYear/{numTravels}/{year}")
+        public ResponseEntity<?> getScootersByTravelsInYear(@PathVariable Integer numTravels, @PathVariable Integer year) {
+            List<Scooter> scooterList = scooterService.getScootersWithMoreThanTravelsInYear(numTravels,year);
+            if(scooterList.isEmpty()){
+                return ResponseEntity.status(HttpStatus.NO_CONTENT).body("no hay monopatines con mas de "+numTravels+" en el anio "+year);
+            }
+            else{
+                return ResponseEntity.status(HttpStatus.OK).bodscooterList);
+            }
+        }
+    /*
+        TODO: "http://localhost:8083/scooters/getByTravelsInYear/"+ numTravels + "/" + year, y tiene que devolver esto Como administrador quiero consultar los monopatines con más de X viajes en un cierto año.
 
+    */
     @PutMapping("/removeScooterMaintenance/{id_scooter}")
-    public ResponseEntity<ResponseEntity> removeScooterToMaintenance(@PathVariable Long id_scooter){
-        return ResponseEntity.status(HttpStatus.OK).body(adminService.removeScooterOfMaintenance(id_scooter));
+    public ResponseEntity<?> removeScooterToMaintenance(@PathVariable Long id_scooter){
+        return ResponseEntity.status(HttpStatus.OK).body(scooterService.removeScooterOfMaintenance(id_scooter));
     }
-
-    @DeleteMapping("/scooter/{scooter_id}")
-    public ResponseEntity<String> deleteScooter(@PathVariable Long scooter_id){
-        return adminService.deleteScooter(scooter_id);
-    }
-
-     @PutMapping("/updateAdmin/{id_admin}")
-    public ResponseEntity<?> updateAdmin(@PathVariable Long id_admin, @RequestBody Admin updateAdmin){
-
-        try {
-            return ResponseEntity.status(HttpStatus.OK).body(adminService.update(id_admin,updateAdmin));
-        }
-        catch (Exception e){
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Error al actualizar el administrador");
-        }
-
-    }
-*/
 
     @PostMapping("")
     public ResponseEntity<?> addScooter(@RequestBody Scooter scooter){
@@ -77,14 +70,12 @@ public class ScooterControllerJPA {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<?> deleteAdmin(@PathVariable Long id){
+    public ResponseEntity<?> deleteScooter(@PathVariable Long id){
         try {
-
             return ResponseEntity.status(HttpStatus.NO_CONTENT).body(scooterService.delete(id));
-
         }
         catch (Exception e){
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Error: no se pudo eliminar el administrador");
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Error: no se pudo eliminar el monopatineta");
         }
     }
 

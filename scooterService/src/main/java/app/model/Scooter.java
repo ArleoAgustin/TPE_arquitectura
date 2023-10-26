@@ -27,9 +27,48 @@ public class Scooter {//TODO: getters and seters
      public Scooter(Scooter scooter) {
      }
 
+     public Scooter(Character state, String ubication, Double km, Integer countTravel) {
+         this.state = state;
+         this.km = km;
+         this.countTravel = countTravel;
+         this.ubication = ubication;
+     }
 
+     public Scooter() {}
 
-     public Scooter() {
+     public Long getId() {
+         return id;
+     }
 
+     public Character getState() {
+         return state;
+     }
+
+     public void setState(Character state) {
+         this.state = state;
+     }
+
+     public String getUbication() {
+         return ubication;
+     }
+
+     public void setUbication(String ubication) {
+         this.ubication = ubication;
+     }
+
+     public Double getKm() {
+         return km;
+     }
+
+     public void setKm(Double km) {
+         this.km = km;
+     }
+
+     public Integer getCountTravel() {
+         return countTravel;
+     }
+
+     public void setCountTravel(Integer countTravel) {
+         this.countTravel = countTravel;
      }
  }

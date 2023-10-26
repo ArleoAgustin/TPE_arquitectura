@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.client.RestTemplate;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -68,5 +69,33 @@ public class ScooterService {
         }
         return false;
     }
+
+    @Transactional
+    public Object addScooterToMaintenance(Long idScooter) {
+        Optional<Scooter> scooter = scooterRepository.findById(idScooter);
+        if(scooter.isPresent()){
+            scooter.get().setState('M');
+            scooterRepository.save(scooter.get());
+            return scooter.get();
+        }
+        return null;
+    }
+
+    @Transactional
+    public Object removeScooterOfMaintenance(Long idScooter) {
+        Optional<Scooter> scooter = scooterRepository.findById(idScooter);
+        if(scooter.isPresent()){
+            scooter.get().setState('D');
+            scooterRepository.save(scooter.get());
+            return scooter.get();
+        }
+        return null;
+    }
+
+    /*public List<Scooter> getScootersWithMoreThanTravelsInYear(Integer numTravels, Integer year) {
+        List<Scooter> scooterList = new ArrayList<>();
+        ///restTemplate.exchange(le pego a la url de facturacion que me devuelve los scooters que viajaron mas de numTravels en el year)
+        return scooterList;
+    }*/
 
 }

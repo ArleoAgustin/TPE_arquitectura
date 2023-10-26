@@ -13,5 +13,6 @@ import java.util.Optional;
 public interface ScooterRepository extends JpaRepository<Scooter, Long>{
 
     List<Scooter> findAllByStateIs(Character m);
+    List<Scooter> findScootersByCountTravelIsGreaterThan(Integer i);
 
 }
