@@ -87,7 +87,7 @@ public class AdminService {
         Scooter newScooter = new Scooter(scooter);
         HttpEntity<Scooter> requestEntity = new HttpEntity<>(newScooter, headers);
         ResponseEntity<String> response = restTemplate.exchange(
-                "http://localhost:8083/scooters/add",
+                "http://localhost:8083/scooter",
                 HttpMethod.POST,
                 requestEntity,
                 String.class
@@ -123,7 +123,7 @@ public class AdminService {
         HttpEntity<Void> requestEntity = new HttpEntity<>(headers);
 
         ResponseEntity<String> response = restTemplate.exchange(
-                "http://localhost:8083/scooters/delete/"+ id_scooter,
+                "http://localhost:8083/scooter/"+ id_scooter,
                 HttpMethod.DELETE,
                 requestEntity,
                 String.class
@@ -142,7 +142,7 @@ public class AdminService {
         HttpEntity<Void> requestEntity = new HttpEntity<>(headers);
 
         ResponseEntity<List<Scooter>> response = restTemplate.exchange(
-                "http://localhost:8083/scooters/inMaintenance",
+                "http://localhost:8083/scooter/inMaintenance",
                 HttpMethod.GET,
                 requestEntity,
                 new ParameterizedTypeReference<List<Scooter>>() {}
@@ -159,27 +159,12 @@ public class AdminService {
         HttpEntity<Void> requestEntity = new HttpEntity<>(headers);
 
         ResponseEntity<Scooter> response = restTemplate.exchange(
-                "http://localhost:8083/scooters/"+ id_scooter,
-                HttpMethod.GET,
+                "http://localhost:8083/scooter/addScooterMaintenance/"+ id_scooter,
+                HttpMethod.PUT,
                 requestEntity,
                 new ParameterizedTypeReference<Scooter>() {}
         );
-        if (response.getStatusCode().is2xxSuccessful()){
-            Scooter scooter = response.getBody();
-            if(scooter.getStatus() == 'D'){    //D de disponible
-                scooter.setStatus('M');         //m de mantenimiento
-                HttpEntity<Scooter> requestEntity2 = new HttpEntity<>(scooter, headers);
-                ResponseEntity<Scooter> response2 = restTemplate.exchange(
-                        "http://localhost:8083/scooters/update/" + id_scooter,
-                        HttpMethod.PUT,
-                        requestEntity2,
-                        new ParameterizedTypeReference<Scooter>() {
-                        }
-                );
-                return response2;
-            }
-        }
-        return ResponseEntity.status(HttpStatus.NOT_FOUND).body("No se pudo establecer el monopatin en mantenimiento");
+        return response;
 
     }
 
@@ -191,57 +176,42 @@ public class AdminService {
         HttpEntity<Void> requestEntity = new HttpEntity<>(headers);
 
         ResponseEntity<Scooter> response = restTemplate.exchange(
-                "http://localhost:8083/scooters/"+ id_scooter,
-                HttpMethod.GET,
+                "http://localhost:8083/scooter/removeScooterMaintenance/"+ id_scooter,
+                HttpMethod.PUT,
                 requestEntity,
                 new ParameterizedTypeReference<Scooter>() {}
         );
-        if (response.getStatusCode().is2xxSuccessful()){
-            Scooter scooter = response.getBody();
-            if(scooter.getStatus() == 'M'){    //M de mantenimiento
-                scooter.setStatus('D');         //D de de disponible
-                HttpEntity<Scooter> requestEntity2 = new HttpEntity<>(scooter, headers);
-                ResponseEntity<Scooter> response2 = restTemplate.exchange(
-                        "http://localhost:8083/scooters/update/" + id_scooter,
-                        HttpMethod.PUT,
-                        requestEntity2,
-                        new ParameterizedTypeReference<Scooter>() {
-                        }
-                );
-                return response2;
-            }
-        }
-        return ResponseEntity.status(HttpStatus.NOT_FOUND).body("No se pudo establecer el monopatin en mantenimiento");
-
+        return response;
     }
 
 //modifica la disponibilidad de la cuenta de un determinado usuario
 
-    public ResponseEntity modifyAvaibleAccount(Long id_user, boolean avaible){
+    public ResponseEntity avaibleUserAccount(Long id_user, boolean avaible){
 
         HttpHeaders headers = new HttpHeaders();
         HttpEntity<Void> requestEntity = new HttpEntity<>(headers);
 
         ResponseEntity<User> response = restTemplate.exchange(
-                "http://localhost:8080/users/"+ id_user,
+                "http://localhost:8080/user/avaibleAccount/"+ id_user,
                 HttpMethod.GET,
                 requestEntity,
                 new ParameterizedTypeReference<User>() {}
         );
-        if (response.getStatusCode().is2xxSuccessful()){
-            User user = response.getBody();
-            user.setAvaibleAccount(avaible);    //se setea el estado de la cuenta
-            HttpEntity<User> requestEntity2 = new HttpEntity<>(user, headers);
-            ResponseEntity<User> response2 = restTemplate.exchange(
-                    "http://localhost:8080/users/update/" + id_user,
-                    HttpMethod.PUT,
-                    requestEntity2,
-                    new ParameterizedTypeReference<User>() {
-                    }
-            );
-            return response2;
-        }
-        return ResponseEntity.status(HttpStatus.NOT_FOUND).body("No se pudo modificar el estado de la cuenta");
+        return  response;   //TODO esto tiene que estar en implementar en user con este endpoint "http://localhost:8080/user/avaibleAccount"+ id_user
+    }
+
+    public ResponseEntity disableUserAccount(Long id_user, boolean disable){
+
+        HttpHeaders headers = new HttpHeaders();
+        HttpEntity<Void> requestEntity = new HttpEntity<>(headers);
+
+        ResponseEntity<User> response = restTemplate.exchange(
+                "http://localhost:8080/user/disableAccount/"+ id_user,
+                HttpMethod.GET,
+                requestEntity,
+                new ParameterizedTypeReference<User>() {}
+        );
+        return  response;   //TODO esto tiene que estar en implementar en user con este endpoint "http://localhost:8080/user/disableAccount"+ id_user
     }
 
     public ResponseEntity getScootersByTravelsInYear(int numTravels, String year){
@@ -249,7 +219,7 @@ public class AdminService {
         HttpHeaders headers = new HttpHeaders();
         HttpEntity<Void> requestEntity = new HttpEntity<>(headers);
         ResponseEntity<List<Scooter>> response = restTemplate.exchange(
-                "http://localhost:8083/scooters/getByTravelsInYear/"+ numTravels + "/" + year,
+                "http://localhost:8084/travel/getByTravelsInYear/"+ numTravels + "/" + year,
                 HttpMethod.GET,
                 requestEntity,
                 new ParameterizedTypeReference<List<Scooter>>() {}

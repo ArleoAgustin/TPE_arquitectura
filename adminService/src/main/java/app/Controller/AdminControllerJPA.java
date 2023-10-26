@@ -71,7 +71,7 @@ public class AdminControllerJPA {
         }
     }
 
-    @PostMapping("/addAdmin")
+    @PostMapping("")
     public ResponseEntity<?> addAdmin(@RequestBody Admin admin){
         try{
             return ResponseEntity.status(HttpStatus.OK).body(adminService.save(admin));
@@ -81,7 +81,7 @@ public class AdminControllerJPA {
         }
     }
 
-    @DeleteMapping("/deleteAdmin/{id}")
+    @DeleteMapping("/{id}")
     public ResponseEntity<?> deleteAdmin(@PathVariable Long id_admin){
         try {
             return ResponseEntity.status(HttpStatus.NO_CONTENT).body(adminService.delete(id_admin));
@@ -91,7 +91,7 @@ public class AdminControllerJPA {
         }
     }
 
-    @PutMapping("/updateAdmin/{id_admin}")
+    @PutMapping("/{id_admin}")
     public ResponseEntity<?> updateAdmin(@PathVariable Long id_admin, @RequestBody Admin updateAdmin){
 
         try {
