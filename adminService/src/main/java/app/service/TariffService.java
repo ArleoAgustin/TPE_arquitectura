@@ -4,6 +4,7 @@ import app.DTO.TariffDTO;
 import app.model.entities.Tariff;
 import app.repository.TariffRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
@@ -14,10 +15,11 @@ public class TariffService {
     private final TariffRepository tariffRepository;
     private final RestTemplate restTemplate;
 
-    public TariffDTO save(Tariff tariff) throws Exception {
+    public ResponseEntity save(Tariff tariff) throws Exception {    //verificar
         try {
-            Tariff t = tariffRepository.save(tariff);
-            return new TariffDTO(t);
+            tariffRepository.deleteAll();       //elimina todas las tarifas existentes y deja la nueva
+            tariffRepository.save(tariff);
+            return ResponseEntity.ok("Tarifa actualizada");
         }
         catch (Exception e){
             throw  new Exception(e.getMessage());

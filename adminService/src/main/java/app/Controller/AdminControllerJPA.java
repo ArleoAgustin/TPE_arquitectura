@@ -5,6 +5,7 @@ import app.model.classs.Scooter;
 import app.model.entities.Admin;
 import app.model.entities.Tariff;
 import app.service.AdminService;
+import app.service.TariffService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -18,10 +19,26 @@ import java.util.List;
 public class AdminControllerJPA {
 
     private final AdminService adminService;
+    private final TariffService tariffService;
 
     @GetMapping("")
     public List<AdminDTO> findAll() {
         return this.adminService.findAll();
+    }
+
+//ajusta la tarifa
+
+    @PutMapping("/adjustmentPrice")
+    public ResponseEntity removeScooterToMaintenance(@RequestBody Tariff newTariff) throws Exception {
+        return ResponseEntity.status(HttpStatus.OK).body(tariffService.save(newTariff));
+    }
+
+
+//Como administrador quiero consultar los monopatines con más de X viajes en un cierto año.
+
+    @GetMapping("/scootersByTravels/{numTravels}/{year}")
+    public ResponseEntity<ResponseEntity> getScootersByTravelsInYear(@PathVariable int numTravels, @PathVariable String year){
+        return ResponseEntity.status(HttpStatus.OK).body(adminService.getScootersByTravelsInYear(numTravels, year));
     }
 
     @GetMapping("/scooter/inMaintenance")
