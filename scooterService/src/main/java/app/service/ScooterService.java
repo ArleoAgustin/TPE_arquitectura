@@ -22,21 +22,21 @@ public class ScooterService {
     private final RestTemplate restTemplate;
 
     @Transactional(readOnly = true)
-    public List<AdminDTO> findAll(){
-        return this.adminRepository.findAll().stream().map(AdminDTO::new).toList();
+    public List<Scooter> findAll(){
+        return this.scooterRepository.findAll().stream().map(Scooter::new).toList();
     }
 
-    public AdminDTO save(Admin admin) throws Exception {
+    public Scooter save(Scooter scooter) throws Exception {
         try {
-            Admin a = adminRepository.save(admin);
-            return new AdminDTO(a);
+            Scooter s = scooterRepository.save(scooter);
+            return new Scooter(s);
         }
         catch (Exception e){
             throw  new Exception(e.getMessage());
         }
     }
 
-    @Transactional
+    /*@Transactional
     public AdminDTO update(Long idAdmin, Admin updateAdmin)throws Exception{
         try {
             Optional<Admin> existsAdmin = adminRepository.findById(idAdmin);
@@ -54,28 +54,19 @@ public class ScooterService {
         catch (Exception e){
             throw new Exception(e.getMessage());
         }
+    }*/
+
+    public List<Scooter> getScooterInMaintenance(){
+        return scooterRepository.findAllByStateIs('M');
     }
 
     @Transactional
     public boolean delete(Long id){
-        if (adminRepository.existsById(id)){
-            adminRepository.deleteById(id);
+        if (scooterRepository.existsById(id)){
+            scooterRepository.deleteById(id);
             return true;
         }
         return false;
     }
 
-    public ResponseEntity addScooter(Scooter scooter){
-
-        HttpHeaders headers = new HttpHeaders();
-        Scooter newScooter = new Scooter(scooter);
-        HttpEntity<Scooter> requestEntity = new HttpEntity<>(newScooter, headers);
-        ResponseEntity<String> response = restTemplate.exchange(
-                "http://localhost:8083/scooters/add",
-                HttpMethod.POST,
-                requestEntity,
-                String.class
-        );
-        return response;
-    }
 }

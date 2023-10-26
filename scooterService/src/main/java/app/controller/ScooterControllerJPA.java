@@ -19,14 +19,19 @@ public class ScooterControllerJPA {
 
 
     @GetMapping("")
-    public List<AdminDTO> findAll() {
-        return this.adminService.findAll();
+    public ResponseEntity<ResponseEntity> findAll() {
+        List<Scooter> scooterList = this.scooterService.findAll();
+        if (scooterList.isEmpty()){
+            return ResponseEntity.status(204).body((ResponseEntity)scooterList);
+        }
+        return ResponseEntity.status(HttpStatus.OK).body((ResponseEntity)scooterList);
     }
 
     @GetMapping("/scooter/inMaintenance")
     public ResponseEntity<ResponseEntity> getScooterinMaintenance(){
-        return ResponseEntity.status(HttpStatus.OK).body(adminService.getScooterInMaintenance());
+        return ResponseEntity.status(HttpStatus.OK).body((ResponseEntity) scooterService.getScooterInMaintenance());
     }
+/*
 
     @PutMapping("/setPrice")
     public ResponseEntity<ResponseEntity> setPrice(@PathVariable Tariff tariff){
@@ -48,37 +53,7 @@ public class ScooterControllerJPA {
         return adminService.deleteScooter(scooter_id);
     }
 
-    @PostMapping("/addScooter")
-    public ResponseEntity<?> addScooter(@RequestBody Scooter scooter){
-        try{
-            return ResponseEntity.status(HttpStatus.OK).body(adminService.addScooter(scooter));
-        }
-        catch (Exception e){
-            return  ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Error: no se pudo agregar el monopatin");
-        }
-    }
-
-    @PostMapping("/addAdmin")
-    public ResponseEntity<?> addAdmin(@RequestBody Admin admin){
-        try{
-            return ResponseEntity.status(HttpStatus.OK).body(adminService.save(admin));
-        }
-        catch (Exception e){
-            return  ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Error: no se pudo agregar el administrador");
-        }
-    }
-
-    @DeleteMapping("/deleteAdmin/{id}")
-    public ResponseEntity<?> deleteAdmin(@PathVariable Long id_admin){
-        try {
-            return ResponseEntity.status(HttpStatus.NO_CONTENT).body(adminService.delete(id_admin));
-        }
-        catch (Exception e){
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Error: no se pudo eliminar el administrador");
-        }
-    }
-
-    @PutMapping("/updateAdmin/{id_admin}")
+     @PutMapping("/updateAdmin/{id_admin}")
     public ResponseEntity<?> updateAdmin(@PathVariable Long id_admin, @RequestBody Admin updateAdmin){
 
         try {
@@ -89,4 +64,29 @@ public class ScooterControllerJPA {
         }
 
     }
+*/
+
+    @PostMapping("")
+    public ResponseEntity<?> addScooter(@RequestBody Scooter scooter){
+        try{
+            return ResponseEntity.status(HttpStatus.OK).body(scooterService.save(scooter));
+        }
+        catch (Exception e){
+            return  ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Error: no se pudo agregar el monopatin");
+        }
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<?> deleteAdmin(@PathVariable Long id){
+        try {
+
+            return ResponseEntity.status(HttpStatus.NO_CONTENT).body(scooterService.delete(id));
+
+        }
+        catch (Exception e){
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Error: no se pudo eliminar el administrador");
+        }
+    }
+
+
 }

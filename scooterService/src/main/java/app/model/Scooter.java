@@ -5,7 +5,7 @@ import jakarta.persistence.*;
 import lombok.Data;
  @Entity
  @Data
-public class Scooter {
+public class Scooter {//TODO: getters and seters
 
         @Id
         @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -23,10 +23,13 @@ public class Scooter {
          @Column(nullable = false)
          private Integer countTravel;
 
-        @ManyToOne
-        @Column(nullable = false)
-        @JoinColumn(name = "id_role")
-        private Role rol;
+
+     public Scooter(Scooter scooter) {
+     }
 
 
-}
+
+     public Scooter() {
+
+     }
+ }
