@@ -29,7 +29,7 @@ public class AdminControllerJPA {
 //ajusta la tarifa
 
     @PutMapping("/adjustmentPrice")
-    public ResponseEntity removeScooterToMaintenance(@RequestBody Tariff newTariff) throws Exception {
+    public ResponseEntity<?> removeScooterToMaintenance(@RequestBody Tariff newTariff) throws Exception {
         return ResponseEntity.status(HttpStatus.OK).body(tariffService.save(newTariff));
     }
 
@@ -37,27 +37,27 @@ public class AdminControllerJPA {
 //Como administrador quiero consultar los monopatines con más de X viajes en un cierto año.
 
     @GetMapping("/scootersByTravels/{numTravels}/{year}")
-    public ResponseEntity<ResponseEntity> getScootersByTravelsInYear(@PathVariable int numTravels, @PathVariable String year){
+    public  ResponseEntity<?> getScootersByTravelsInYear(@PathVariable int numTravels, @PathVariable String year){
         return ResponseEntity.status(HttpStatus.OK).body(adminService.getScootersByTravelsInYear(numTravels, year));
     }
 
     @GetMapping("/scooter/inMaintenance")
-    public ResponseEntity<ResponseEntity> getScooterinMaintenance(){
+    public ResponseEntity<?> getScooterinMaintenance(){
         return ResponseEntity.status(HttpStatus.OK).body(adminService.getScooterInMaintenance());
     }
 
     @PutMapping("/addScooterMaintenance/{id_scooter}")
-    public ResponseEntity<ResponseEntity> addScooterToMaintenance(@PathVariable Long id_scooter){
+    public ResponseEntity<?> addScooterToMaintenance(@PathVariable Long id_scooter){
         return ResponseEntity.status(HttpStatus.OK).body(adminService.addScooterToMaintenance(id_scooter));
     }
 
     @PutMapping("/removeScooterMaintenance/{id_scooter}")
-    public ResponseEntity<ResponseEntity> removeScooterToMaintenance(@PathVariable Long id_scooter){
+    public ResponseEntity<?> removeScooterToMaintenance(@PathVariable Long id_scooter){
         return ResponseEntity.status(HttpStatus.OK).body(adminService.removeScooterOfMaintenance(id_scooter));
     }
 
     @DeleteMapping("/scooter/{scooter_id}")
-    public ResponseEntity<String> deleteScooter(@PathVariable Long scooter_id){
+    public ResponseEntity<?> deleteScooter(@PathVariable Long scooter_id){
         return adminService.deleteScooter(scooter_id);
     }
 
