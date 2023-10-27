@@ -30,11 +30,10 @@ public class TravelContollerJPA {
         catch (Exception e){
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Error: no se pudo eliminar el viaje");
         }
-
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<?> getById(@RequestBody Long id) {
+    public ResponseEntity<?> getById(@PathVariable Long id) {
         try {
             return ResponseEntity.status(HttpStatus.OK).body(travelService.getById(id));
         }
@@ -49,7 +48,7 @@ public class TravelContollerJPA {
             return ResponseEntity.status(HttpStatus.OK).body(travelService.addTravel(travel));
         }
         catch (Exception e){
-            return  ResponseEntity.status(HttpStatus.I_AM_A_TEAPOT).body("Error: no se pudo agregar el monopatin");
+            return  ResponseEntity.status(HttpStatus.I_AM_A_TEAPOT).body("Error: no se pudo agregar el viaje");
         }
 
     }

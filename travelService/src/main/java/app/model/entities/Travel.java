@@ -39,7 +39,10 @@ public class Travel implements Serializable {
         this.scooterID = scooterID;
     }
 
-    public Travel(){}
+    public Travel(){
+        this.start = LocalDateTime.now();
+        this.kmTraveled = 0.0;
+    }
 
     public Travel(Travel travel) {
     }
