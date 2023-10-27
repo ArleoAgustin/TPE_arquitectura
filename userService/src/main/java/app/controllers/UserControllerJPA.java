@@ -63,6 +63,15 @@ public class UserControllerJPA {
         else return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Error:No se pudo habilitar al usuario");
     }
 
+    @GetMapping("/{userId}")
+    public ResponseEntity<User> getUserById(@PathVariable Long userId) {
+        User user = userService.getUserById(userId);
+        if (user != null) {
+            return ResponseEntity.ok(user); // Usuario encontrado, se devuelve en la respuesta
+        } else {
+            return ResponseEntity.notFound().build(); // Usuario no encontrado
+        }
+
 
 
 
