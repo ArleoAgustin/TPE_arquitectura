@@ -42,10 +42,10 @@ public class TravelContollerJPA {
         }
     }
 
-    @PostMapping("/add")
-    public ResponseEntity<?> addTravel(@RequestBody Travel travel) {
+    @PostMapping("")
+    public ResponseEntity<?> addTravel(@RequestBody Long userDNI, @RequestBody Long scooterId) {
         try{
-            return ResponseEntity.status(HttpStatus.OK).body(travelService.addTravel(travel));
+            return ResponseEntity.status(HttpStatus.OK).body(travelService.addTravel(userDNI, scooterId));
         }
         catch (Exception e){
             return  ResponseEntity.status(HttpStatus.I_AM_A_TEAPOT).body("Error: no se pudo agregar el viaje");
