@@ -4,20 +4,21 @@ import app.model.classes.User;
 import jakarta.persistence.*;
 import lombok.Data;
 
+import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.TimeZone;
 
 @Data
 @Entity
-public class Travel {
+public class Travel implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @Column
     private LocalDateTime date;
-    @Column(nullable = false)
+    @Column
     private LocalDateTime start;
     @Column
     private LocalDateTime end;
@@ -39,6 +40,9 @@ public class Travel {
     }
 
     public Travel(){}
+
+    public Travel(Travel travel) {
+    }
 
     public Long getId() {
         return id;
