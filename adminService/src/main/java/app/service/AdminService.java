@@ -192,16 +192,15 @@ public class AdminService {
         HttpEntity<Void> requestEntity = new HttpEntity<>(headers);
 
         ResponseEntity<User> response = restTemplate.exchange(
-                "http://localhost:8080/user/avaibleAccount/"+ id_user,
+                "http://localhost:8080/user/enableAccount/"+ id_user, //cambie a enable en url
                 HttpMethod.GET,
                 requestEntity,
                 new ParameterizedTypeReference<User>() {}
         );
-        return  response;   //TODO esto tiene que estar en implementar en user con este endpoint "http://localhost:8080/user/avaibleAccount"+ id_user
+        return  response;   //TODO esto tiene que estar en implementar en user con este endpoint "http://localhost:8080/user/enableAccount"+ id_user
     }
 
     public ResponseEntity disableUserAccount(Long id_user, boolean disable){
-
         HttpHeaders headers = new HttpHeaders();
         HttpEntity<Void> requestEntity = new HttpEntity<>(headers);
 
