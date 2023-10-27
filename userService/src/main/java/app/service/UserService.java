@@ -80,6 +80,11 @@ public class UserService {
         }
     }
 
+    public User getUserById(Long userId){
+        Optional<User> optionalUser = userRepository.findById(userId);
+        return optionalUser.orElse(null);
+    }
+
 
 
 
