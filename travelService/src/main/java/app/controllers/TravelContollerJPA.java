@@ -50,13 +50,21 @@ public class TravelContollerJPA {
         catch (Exception e){
             return  ResponseEntity.status(HttpStatus.I_AM_A_TEAPOT).body("Error: no se pudo agregar el viaje");
         }
+    }
 
+    @GetMapping("/scootersWithMoreThanXin/{numTravels}/{year}")
+    public  ResponseEntity<?> getScootersByTravelsInYear(@PathVariable Integer numTravels, @PathVariable Integer year){
+        try {
+            List<Long> scootersId = travelService.getScootersWithMoreThanTravelsInYear(numTravels, year);
+            if (scootersId == null) return ResponseEntity.status(HttpStatus.NO_CONTENT).body("no se encontraron monopatines con viajes en ese anio");
+            return ResponseEntity.status(HttpStatus.OK).body(scootersId);
+        }
+        catch(Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("no se encontraron monopatines con viajes en ese anio");
+        }
     }
 
 }
 /*todo:
- @GetMapping("/scootersByTravels/{numTravels}/{year}")
-    public  ResponseEntity<?> getScootersByTravelsInYear(@PathVariable int numTravels, @PathVariable String year){
-        return ResponseEntity.status(HttpStatus.OK).body(adminService.getScootersByTravelsInYear(numTravels, year));
-    }
+
 */

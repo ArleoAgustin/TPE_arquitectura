@@ -61,4 +61,9 @@ public class TravelService {
         return null;
     }
 
+    public List<Long> getScootersWithMoreThanTravelsInYear(Integer travels, Integer year) {
+        List<Long> scootersId = this.travelRepository.findScootersWithMoreThanXTravelsInYear(travels, year);
+        if(scootersId.isEmpty())return null;
+        return scootersId;
+    }
 }
