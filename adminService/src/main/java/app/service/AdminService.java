@@ -4,6 +4,7 @@ import app.DTO.AdminDTO;
 import app.DTO.TariffDTO;
 import app.model.classs.Maintenance;
 import app.model.classs.Scooter;
+import app.model.classs.Travel;
 import app.model.classs.User;
 import app.model.entities.Admin;
 import app.model.entities.Tariff;
@@ -94,26 +95,7 @@ public class AdminService {
         );
         return response;
     }
-/*
-    private ResponseEntity addScooterToMaintenance(Long id_scooter){    //le pega a scooter para actualizar el estado
 
-        HttpHeaders headers = new HttpHeaders();
-        Maintenance newMaintenace = new Maintenance();
-        newMaintenace.setScooterId(id_scooter);
-        newMaintenace.setTimeStartMaintenance(LocalDate.now());
-        newMaintenace.setTimeEndMaintenance(null);
-        newMaintenace.setRepaired(false);
-
-        HttpEntity<Maintenance> requestEntity = new HttpEntity<>(newMaintenace, headers);
-        ResponseEntity<String> response = restTemplate.exchange(
-                "http://localhost:8085/scooter/addMaintenance/" + id_scooter,
-                HttpMethod.PUT,
-                requestEntity,
-                String.class
-        );
-        return response;
-    }
-*/
 
 //elimina un monopatin
 
@@ -184,34 +166,38 @@ public class AdminService {
         return response;
     }
 
-//modifica la disponibilidad de la cuenta de un determinado usuario
+//habilita la cuenta de un usuario
 
-    public ResponseEntity avaibleUserAccount(Long id_user, boolean avaible){
+    public ResponseEntity avaibleUserAccount(Long id_user){
 
         HttpHeaders headers = new HttpHeaders();
         HttpEntity<Void> requestEntity = new HttpEntity<>(headers);
 
         ResponseEntity<User> response = restTemplate.exchange(
                 "http://localhost:8080/user/enableAccount/"+ id_user, //cambie a enable en url
-                HttpMethod.GET,
+                HttpMethod.PUT,
                 requestEntity,
                 new ParameterizedTypeReference<User>() {}
         );
         return  response;   //TODO esto tiene que estar en implementar en user con este endpoint "http://localhost:8080/user/enableAccount"+ id_user
     }
 
-    public ResponseEntity disableUserAccount(Long id_user, boolean disable){
+//desabilita la cuenta de un usuario
+
+    public ResponseEntity disableUserAccount(Long id_user){
         HttpHeaders headers = new HttpHeaders();
         HttpEntity<Void> requestEntity = new HttpEntity<>(headers);
 
         ResponseEntity<User> response = restTemplate.exchange(
                 "http://localhost:8080/user/disableAccount/"+ id_user,
-                HttpMethod.GET,
+                HttpMethod.PUT,
                 requestEntity,
                 new ParameterizedTypeReference<User>() {}
         );
         return  response;   //TODO esto tiene que estar en implementar en user con este endpoint "http://localhost:8080/user/disableAccount"+ id_user
     }
+
+//obtiene los monopatines con mas de X viajes en un determinado año
 
     public ResponseEntity getScootersByTravelsInYear(int numTravels, String year){
 
@@ -227,5 +213,35 @@ public class AdminService {
         return response;
     }
 
+//obtiene el total facturado en un rango de meses de un determinado año
 
+    public ResponseEntity getBilling_Xmonths_Xyear(String m1, String m2, String y){
+
+        HttpHeaders headers = new HttpHeaders();
+        HttpEntity<Void> requestEntity = new HttpEntity<>(headers);
+        ResponseEntity<Double> response = restTemplate.exchange(
+                "http://localhost:8084/travel/getBillingByMonthsByYear/" + m1 + "/" + m2 + "/" + y,
+                HttpMethod.GET,
+                requestEntity,
+                Double.class
+        );
+        headers.setContentType(MediaType.APPLICATION_JSON);
+        return response;
+    }
+
+//obtiene los monopatines en mantenimiento vs los disponibles
+
+    public ResponseEntity getScootersInMaintenanceVsAvaible(){
+        HttpHeaders headers = new HttpHeaders();
+        HttpEntity<Void> requestEntity = new HttpEntity<>(headers);
+        ResponseEntity<List<Scooter>> response = restTemplate.exchange(
+                "http://localhost:8083/scooter/inMaintenanceVsAvaible",
+                HttpMethod.GET,
+                requestEntity,
+                new ParameterizedTypeReference<List<Scooter>>() {
+                }
+        );
+        headers.setContentType(MediaType.APPLICATION_JSON);
+        return response;
+    }
 }

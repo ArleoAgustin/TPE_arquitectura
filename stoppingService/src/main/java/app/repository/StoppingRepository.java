@@ -1,4 +1,7 @@
 package app.repository;
 
-public interface StoppingRepository {
+import app.model.Stopping;
+import org.springframework.data.jpa.repository.JpaRepository;
+
+public interface StoppingRepository extends JpaRepository<Stopping, Long> {
 }

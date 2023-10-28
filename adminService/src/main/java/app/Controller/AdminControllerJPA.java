@@ -1,6 +1,5 @@
 package app.Controller;
 
-import app.DTO.AdminDTO;
 import app.model.classs.Scooter;
 import app.model.entities.Admin;
 import app.model.entities.Tariff;
@@ -21,9 +20,15 @@ public class AdminControllerJPA {
     private final AdminService adminService;
     private final TariffService tariffService;
 
+//obtiene todos los administradores
+
     @GetMapping("")
-    public List<AdminDTO> findAll() {
-        return this.adminService.findAll();
+    public ResponseEntity<?> findAll() {
+        try{
+        return ResponseEntity.status(HttpStatus.OK).body(adminService.findAll());
+        }catch (Exception e){
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Error al obtener todos los administradores.");
+        }
     }
 
 //ajusta la tarifa
@@ -34,32 +39,47 @@ public class AdminControllerJPA {
     }
 
 
+//Como administrador quiero consultar los monopatines con más de X viajes en un cierto año.
 
-
-    @GetMapping("/scootersByTravels/{numTravels}/{year}")//Como administrador quiero consultar los monopatines con más de X viajes en un cierto año.
+    @GetMapping("/scootersByTravels/{numTravels}/{year}")
     public  ResponseEntity<?> getScootersByTravelsInYear(@PathVariable int numTravels, @PathVariable String year){
         return ResponseEntity.status(HttpStatus.OK).body(adminService.getScootersByTravelsInYear(numTravels, year));
     }//va en scoter controller
+
+
+//obtiene todos los monopatines en mantenimiento
 
     @GetMapping("/scooter/inMaintenance")
     public ResponseEntity<?> getScooterinMaintenance(){
         return ResponseEntity.status(HttpStatus.OK).body(adminService.getScooterInMaintenance());
     }//va en scoter controller
 
+
+//agrega un monopatin de mantenimiento
+
     @PutMapping("/addScooterMaintenance/{id_scooter}")
     public ResponseEntity<?> addScooterToMaintenance(@PathVariable Long id_scooter){
         return ResponseEntity.status(HttpStatus.OK).body(adminService.addScooterToMaintenance(id_scooter));
     }//va en scoter controller
+
+
+//quita un monopatin de mantenimiento
 
     @PutMapping("/removeScooterMaintenance/{id_scooter}")
     public ResponseEntity<?> removeScooterToMaintenance(@PathVariable Long id_scooter){
         return ResponseEntity.status(HttpStatus.OK).body(adminService.removeScooterOfMaintenance(id_scooter));
     }//va en scoter controller
 
+
+//elimina un monopatin
+
     @DeleteMapping("/scooter/{scooter_id}")
     public ResponseEntity<?> deleteScooter(@PathVariable Long scooter_id){
         return adminService.deleteScooter(scooter_id);
     }//va en scoter controller
+
+
+//agrega un monopatin
 
     @PostMapping("/addScooter")
     public ResponseEntity<?> addScooter(@RequestBody Scooter scooter){
@@ -71,6 +91,9 @@ public class AdminControllerJPA {
         }//va en scoter controller
     }
 
+
+//agrega un admin
+
     @PostMapping("")
     public ResponseEntity<?> addAdmin(@RequestBody Admin admin){
         try{
@@ -81,15 +104,21 @@ public class AdminControllerJPA {
         }
     }
 
-    @DeleteMapping("/{id}")
+
+//elimina un admin
+
+    @DeleteMapping("/{id_admin}")
     public ResponseEntity<?> deleteAdmin(@PathVariable Long id_admin){
         try {
-            return ResponseEntity.status(HttpStatus.NO_CONTENT).body(adminService.delete(id_admin));
+            return ResponseEntity.status(HttpStatus.OK).body(adminService.delete(id_admin));
         }
         catch (Exception e){
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Error: no se pudo eliminar el administrador");
         }
     }
+
+
+//Actualiza un admin
 
     @PutMapping("/{id_admin}")
     public ResponseEntity<?> updateAdmin(@PathVariable Long id_admin, @RequestBody Admin updateAdmin){
@@ -101,15 +130,45 @@ public class AdminControllerJPA {
         }
     }
 
+
+//habilita una cuenta de usuario
+
     @PutMapping("/modifyAvaibleAccount/{id_user}")
-    public ResponseEntity<?> modifyAvaibleAccount(@PathVariable Long id_user, @RequestBody boolean avaible){
+    public ResponseEntity<?> modifyAvaibleAccount(@PathVariable Long id_user){
         try {
-            return ResponseEntity.status(HttpStatus.OK).body(adminService.avaibleUserAccount(id_user,avaible));
+            return ResponseEntity.status(HttpStatus.OK).body(adminService.avaibleUserAccount(id_user));
         }
         catch (Exception e){
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Error al actualizar el administrador");
         }
-    }//va en User controller
+    }
 
 
+//Desabilita una cuenta de usuario
+
+    @PutMapping("/modifyDisableAccount/{id_user}")
+    public ResponseEntity<?> modifyDisableAccount(@PathVariable Long id_user){
+        try {
+            return ResponseEntity.status(HttpStatus.OK).body(adminService.disableUserAccount(id_user));
+        }
+        catch (Exception e){
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Error al actualizar el administrador");
+        }
+    }
+
+
+//obtiene lo facturado en un rango de meses de un determinado año
+
+    @GetMapping("/getTotalBilling/{month1}/{month2}/{year}")
+    public ResponseEntity<?> getBilling_Xmonths_Xyear(@PathVariable String month1, @PathVariable String month2, @PathVariable String year){
+        return ResponseEntity.status(HttpStatus.OK).body(adminService.getBilling_Xmonths_Xyear(month1, month2, year));
+    }
+
+
+//obtiene un listado de monopatines en mantenimiento vs los disponibles
+
+    @GetMapping("/scootersInMaintenanceVsAvaible")
+    public ResponseEntity<?> getScootersInMaintenanceVsAvaible(){
+        return ResponseEntity.status(HttpStatus.OK).body(adminService.getScootersInMaintenanceVsAvaible());
+    }
 }
