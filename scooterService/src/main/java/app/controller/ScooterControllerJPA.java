@@ -26,6 +26,13 @@ public class ScooterControllerJPA {
         return ResponseEntity.status(HttpStatus.OK).body(scooterList);
     }
 
+    @GetMapping("/{id}")
+    public ResponseEntity<?> getById(@PathVariable Long id) {
+        Scooter result = scooterService.getById(id);
+        if(result == null)return ResponseEntity.status(HttpStatus.NO_CONTENT).body("no se encontro el monopatin");
+        return ResponseEntity.status(HttpStatus.OK).body(result);
+    }
+
     @GetMapping("/inMaintenance")
     public ResponseEntity<?> getScooterinMaintenance(){
         return ResponseEntity.status(HttpStatus.OK).body(scooterService.getScooterInMaintenance());

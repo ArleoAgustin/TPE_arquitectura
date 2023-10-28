@@ -37,26 +37,6 @@ public class ScooterService {
         }
     }
 
-    /*@Transactional
-    public AdminDTO update(Long idAdmin, Admin updateAdmin)throws Exception{
-        try {
-            Optional<Admin> existsAdmin = adminRepository.findById(idAdmin);
-            if (existsAdmin.isPresent()) {
-                Admin admin = existsAdmin.get();
-                admin.setNombre(updateAdmin.getNombre());
-                admin.setApellido(updateAdmin.getApellido());
-                admin.setRol(updateAdmin.getRol());
-                Admin updatAdmin = adminRepository.save(admin);
-                AdminDTO adminDTO = new AdminDTO(updatAdmin);
-                return adminDTO;
-            }
-            throw  new Exception("Administrador no encontrado");
-        }
-        catch (Exception e){
-            throw new Exception(e.getMessage());
-        }
-    }*/
-
     public List<Scooter> getScooterInMaintenance(){
         return scooterRepository.findAllByStateIs('M');
     }
@@ -90,6 +70,11 @@ public class ScooterService {
             return scooter.get();
         }
         return null;
+    }
+
+    public Scooter getById(Long id) {
+        Optional<Scooter> result = this.scooterRepository.findById(id);
+        return result.orElse(null);
     }
 
     /*public List<Scooter> getScootersWithMoreThanTravelsInYear(Integer numTravels, Integer year) {
