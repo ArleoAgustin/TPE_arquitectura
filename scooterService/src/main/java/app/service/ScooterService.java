@@ -37,10 +37,6 @@ public class ScooterService {
         }
     }
 
-    public List<Scooter> getScooterInMaintenance(){
-        return scooterRepository.findAllByStateIs('M');
-    }
-
     @Transactional
     public boolean delete(Long id){
         if (scooterRepository.existsById(id)){
@@ -77,10 +73,8 @@ public class ScooterService {
         return result.orElse(null);
     }
 
-    /*public List<Scooter> getScootersWithMoreThanTravelsInYear(Integer numTravels, Integer year) {
-        List<Scooter> scooterList = new ArrayList<>();
-        ///restTemplate.exchange(le pego a la url de facturacion que me devuelve los scooters que viajaron mas de numTravels en el year)
-        return scooterList;
-    }*/
+    public List<Scooter> getScooterByStatus(Character s) {
+        return scooterRepository.findAllByStateIs(s);
+    }
 
 }

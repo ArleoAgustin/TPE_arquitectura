@@ -8,6 +8,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 @RestController
@@ -35,7 +37,7 @@ public class ScooterControllerJPA {
 
     @GetMapping("/inMaintenance")
     public ResponseEntity<?> getScooterinMaintenance(){
-        return ResponseEntity.status(HttpStatus.OK).body(scooterService.getScooterInMaintenance());
+        return ResponseEntity.status(HttpStatus.OK).body(scooterService.getScooterByStatus(Scooter.IN_MANTENIENCE));
     }
 
     @PutMapping("/addScooterMaintenance/{id_scooter}")
@@ -46,21 +48,7 @@ public class ScooterControllerJPA {
         }
         else return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("no se pudo agregar a mantenimiento");
     }
-    /*
-        @GetMapping("/getByTravelsInYear/{numTravels}/{year}")
-        public ResponseEntity<?> getScootersByTravelsInYear(@PathVariable Integer numTravels, @PathVariable Integer year) {
-            List<Scooter> scooterList = scooterService.getScootersWithMoreThanTravelsInYear(numTravels,year);
-            if(scooterList.isEmpty()){
-                return ResponseEntity.status(HttpStatus.NO_CONTENT).body("no hay monopatines con mas de "+numTravels+" en el anio "+year);
-            }
-            else{
-                return ResponseEntity.status(HttpStatus.OK).bodscooterList);
-            }
-        }
-    /*
-        TODO: "http://localhost:8083/scooters/getByTravelsInYear/"+ numTravels + "/" + year, y tiene que devolver esto Como administrador quiero consultar los monopatines con más de X viajes en un cierto año.
 
-    */
     @PutMapping("/removeScooterMaintenance/{id_scooter}")
     public ResponseEntity<?> removeScooterToMaintenance(@PathVariable Long id_scooter){
         return ResponseEntity.status(HttpStatus.OK).body(scooterService.removeScooterOfMaintenance(id_scooter));
@@ -83,6 +71,19 @@ public class ScooterControllerJPA {
         }
         catch (Exception e){
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Error: no se pudo eliminar el monopatineta");
+        }
+    }
+
+    @GetMapping("byStatus")
+    public ResponseEntity<?> getScootersByStatus(){
+        HashMap<String,List<Scooter>> scooters = new HashMap<>();
+        try {
+            scooters.put("En uso",this.scooterService.getScooterByStatus(Scooter.IN_USE));
+            scooters.put("En mantenimiento",this.scooterService.getScooterByStatus(Scooter.IN_MANTENIENCE));
+            return ResponseEntity.status(HttpStatus.OK).body(scooters);
+        }
+        catch (Exception e){
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("servicio no disponible");
         }
     }
 

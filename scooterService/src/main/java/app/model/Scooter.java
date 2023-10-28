@@ -5,7 +5,12 @@ import jakarta.persistence.*;
 import lombok.Data;
  @Entity
  @Data
-public class Scooter {//TODO: getters and seters
+public class Scooter {
+
+        public static final Character AVALIABLE = 'A';
+        public static final Character IN_USE = 'I';
+        public static final Character DISABLED = 'D';
+        public static final Character IN_MANTENIENCE = 'M';
 
         @Id
         @GeneratedValue(strategy = GenerationType.IDENTITY)
