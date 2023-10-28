@@ -232,16 +232,27 @@ public class AdminService {
 
         HttpHeaders headers = new HttpHeaders();
         HttpEntity<Void> requestEntity = new HttpEntity<>(headers);
-        ResponseEntity<Integer> response = restTemplate.exchange(
+        ResponseEntity<Double> response = restTemplate.exchange(
                 "http://localhost:8084/travel/getBillingByMonthsByYear/" + m1 + "/" + m2 + "/" + y,
                 HttpMethod.GET,
                 requestEntity,
-                Integer.class
+                Double.class
         );
         headers.setContentType(MediaType.APPLICATION_JSON);
         return response;
     }
 
-
-
+    public ResponseEntity getScootersInMaintenanceVsAvaible(){
+        HttpHeaders headers = new HttpHeaders();
+        HttpEntity<Void> requestEntity = new HttpEntity<>(headers);
+        ResponseEntity<List<Scooter>> response = restTemplate.exchange(
+                "http://localhost:8083/scooter/inMaintenanceVsAvaible",
+                HttpMethod.GET,
+                requestEntity,
+                new ParameterizedTypeReference<List<Scooter>>() {
+                }
+        );
+        headers.setContentType(MediaType.APPLICATION_JSON);
+        return response;
+    }
 }

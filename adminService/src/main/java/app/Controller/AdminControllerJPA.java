@@ -135,4 +135,9 @@ public class AdminControllerJPA {
     public ResponseEntity<?> getBilling_Xmonths_Xyear(@PathVariable String month1, @PathVariable String month2, @PathVariable String year){
         return ResponseEntity.status(HttpStatus.OK).body(adminService.getBilling_Xmonths_Xyear(month1, month2, year));
     }
+
+    @GetMapping("/scootersInMaintenanceVsAvaible")
+    public ResponseEntity<?> getScootersInMaintenanceVsAvaible(){
+        return ResponseEntity.status(HttpStatus.OK).body(adminService.getScootersInMaintenanceVsAvaible());
+    }
 }
