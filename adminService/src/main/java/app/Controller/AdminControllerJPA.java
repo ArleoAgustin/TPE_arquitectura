@@ -30,36 +30,36 @@ public class AdminControllerJPA {
 
     @PutMapping("/adjustmentPrice")
     public ResponseEntity<?> removeScooterToMaintenance(@RequestBody Tariff newTariff) throws Exception {
-        return ResponseEntity.status(HttpStatus.OK).body(tariffService.save(newTariff));
+        return ResponseEntity.status(HttpStatus.OK).body(tariffService.save(newTariff));// va en tariff controler
     }
 
 
-//Como administrador quiero consultar los monopatines con más de X viajes en un cierto año.
 
-    @GetMapping("/scootersByTravels/{numTravels}/{year}")
+
+    @GetMapping("/scootersByTravels/{numTravels}/{year}")//Como administrador quiero consultar los monopatines con más de X viajes en un cierto año.
     public  ResponseEntity<?> getScootersByTravelsInYear(@PathVariable int numTravels, @PathVariable String year){
         return ResponseEntity.status(HttpStatus.OK).body(adminService.getScootersByTravelsInYear(numTravels, year));
-    }
+    }//va en scoter controller
 
     @GetMapping("/scooter/inMaintenance")
     public ResponseEntity<?> getScooterinMaintenance(){
         return ResponseEntity.status(HttpStatus.OK).body(adminService.getScooterInMaintenance());
-    }
+    }//va en scoter controller
 
     @PutMapping("/addScooterMaintenance/{id_scooter}")
     public ResponseEntity<?> addScooterToMaintenance(@PathVariable Long id_scooter){
         return ResponseEntity.status(HttpStatus.OK).body(adminService.addScooterToMaintenance(id_scooter));
-    }
+    }//va en scoter controller
 
     @PutMapping("/removeScooterMaintenance/{id_scooter}")
     public ResponseEntity<?> removeScooterToMaintenance(@PathVariable Long id_scooter){
         return ResponseEntity.status(HttpStatus.OK).body(adminService.removeScooterOfMaintenance(id_scooter));
-    }
+    }//va en scoter controller
 
     @DeleteMapping("/scooter/{scooter_id}")
     public ResponseEntity<?> deleteScooter(@PathVariable Long scooter_id){
         return adminService.deleteScooter(scooter_id);
-    }
+    }//va en scoter controller
 
     @PostMapping("/addScooter")
     public ResponseEntity<?> addScooter(@RequestBody Scooter scooter){
@@ -68,7 +68,7 @@ public class AdminControllerJPA {
         }
         catch (Exception e){
             return  ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Error: no se pudo agregar el monopatin");
-        }
+        }//va en scoter controller
     }
 
     @PostMapping("")
@@ -109,5 +109,7 @@ public class AdminControllerJPA {
         catch (Exception e){
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Error al actualizar el administrador");
         }
-    }
+    }//va en User controller
+
+
 }
