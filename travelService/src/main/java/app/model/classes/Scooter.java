@@ -7,6 +7,11 @@ import java.io.Serializable;
 @Data
 public class Scooter implements Serializable {
 
+    public static final Character AVALIABLE = 'A';
+    public static final Character IN_USE = 'I';
+    public static final Character DISABLED = 'D';
+    public static final Character IN_MANTENIENCE = 'M';
+
     private Long id;
     private Character state;
     private String ubication;

@@ -7,7 +7,9 @@ import java.io.Serializable;
 
 @Data
 public class User implements Serializable {
-    private long DNI;
+
+    public static final Character AVALIABLE = 'A';
+    public static final Character DISABLED = 'D';
 
     private Long dni;
     private String name;
