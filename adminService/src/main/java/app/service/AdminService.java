@@ -95,26 +95,7 @@ public class AdminService {
         );
         return response;
     }
-/*
-    private ResponseEntity addScooterToMaintenance(Long id_scooter){    //le pega a scooter para actualizar el estado
 
-        HttpHeaders headers = new HttpHeaders();
-        Maintenance newMaintenace = new Maintenance();
-        newMaintenace.setScooterId(id_scooter);
-        newMaintenace.setTimeStartMaintenance(LocalDate.now());
-        newMaintenace.setTimeEndMaintenance(null);
-        newMaintenace.setRepaired(false);
-
-        HttpEntity<Maintenance> requestEntity = new HttpEntity<>(newMaintenace, headers);
-        ResponseEntity<String> response = restTemplate.exchange(
-                "http://localhost:8085/scooter/addMaintenance/" + id_scooter,
-                HttpMethod.PUT,
-                requestEntity,
-                String.class
-        );
-        return response;
-    }
-*/
 
 //elimina un monopatin
 
@@ -185,7 +166,7 @@ public class AdminService {
         return response;
     }
 
-//modifica la disponibilidad de la cuenta de un determinado usuario
+//habilita la cuenta de un usuario
 
     public ResponseEntity avaibleUserAccount(Long id_user){
 
@@ -201,6 +182,8 @@ public class AdminService {
         return  response;   //TODO esto tiene que estar en implementar en user con este endpoint "http://localhost:8080/user/enableAccount"+ id_user
     }
 
+//desabilita la cuenta de un usuario
+
     public ResponseEntity disableUserAccount(Long id_user){
         HttpHeaders headers = new HttpHeaders();
         HttpEntity<Void> requestEntity = new HttpEntity<>(headers);
@@ -213,6 +196,8 @@ public class AdminService {
         );
         return  response;   //TODO esto tiene que estar en implementar en user con este endpoint "http://localhost:8080/user/disableAccount"+ id_user
     }
+
+//obtiene los monopatines con mas de X viajes en un determinado año
 
     public ResponseEntity getScootersByTravelsInYear(int numTravels, String year){
 
@@ -228,6 +213,8 @@ public class AdminService {
         return response;
     }
 
+//obtiene el total facturado en un rango de meses de un determinado año
+
     public ResponseEntity getBilling_Xmonths_Xyear(String m1, String m2, String y){
 
         HttpHeaders headers = new HttpHeaders();
@@ -241,6 +228,8 @@ public class AdminService {
         headers.setContentType(MediaType.APPLICATION_JSON);
         return response;
     }
+
+//obtiene los monopatines en mantenimiento vs los disponibles
 
     public ResponseEntity getScootersInMaintenanceVsAvaible(){
         HttpHeaders headers = new HttpHeaders();
