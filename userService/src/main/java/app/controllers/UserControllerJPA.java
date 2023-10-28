@@ -71,7 +71,7 @@ public class UserControllerJPA {
         } else {
             return ResponseEntity.notFound().build(); // Usuario no encontrado
         }
-
+    }
 
 
 

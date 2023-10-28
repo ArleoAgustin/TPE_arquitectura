@@ -21,13 +21,13 @@ public class AdminControllerJPA {
     private final AdminService adminService;
     private final TariffService tariffService;
 
+//obtiene todos los administradores
     @GetMapping("")
     public List<AdminDTO> findAll() {
         return this.adminService.findAll();
     }
 
 //ajusta la tarifa
-
     @PutMapping("/adjustmentPrice")
     public ResponseEntity<?> removeScooterToMaintenance(@RequestBody Tariff newTariff) throws Exception {
         return ResponseEntity.status(HttpStatus.OK).body(tariffService.save(newTariff));
@@ -35,32 +35,36 @@ public class AdminControllerJPA {
 
 
 //Como administrador quiero consultar los monopatines con más de X viajes en un cierto año.
-
     @GetMapping("/scootersByTravels/{numTravels}/{year}")
     public  ResponseEntity<?> getScootersByTravelsInYear(@PathVariable int numTravels, @PathVariable String year){
         return ResponseEntity.status(HttpStatus.OK).body(adminService.getScootersByTravelsInYear(numTravels, year));
     }
 
+//obtiene todos los monopatines en mantenimiento
     @GetMapping("/scooter/inMaintenance")
     public ResponseEntity<?> getScooterinMaintenance(){
         return ResponseEntity.status(HttpStatus.OK).body(adminService.getScooterInMaintenance());
     }
 
+//agrega un monopatin de mantenimiento
     @PutMapping("/addScooterMaintenance/{id_scooter}")
     public ResponseEntity<?> addScooterToMaintenance(@PathVariable Long id_scooter){
         return ResponseEntity.status(HttpStatus.OK).body(adminService.addScooterToMaintenance(id_scooter));
     }
 
+//quita un monopatin de mantenimiento
     @PutMapping("/removeScooterMaintenance/{id_scooter}")
     public ResponseEntity<?> removeScooterToMaintenance(@PathVariable Long id_scooter){
         return ResponseEntity.status(HttpStatus.OK).body(adminService.removeScooterOfMaintenance(id_scooter));
     }
 
+//elimina un monopatin
     @DeleteMapping("/scooter/{scooter_id}")
     public ResponseEntity<?> deleteScooter(@PathVariable Long scooter_id){
         return adminService.deleteScooter(scooter_id);
     }
 
+//agrega un monopatin
     @PostMapping("/addScooter")
     public ResponseEntity<?> addScooter(@RequestBody Scooter scooter){
         try{
@@ -71,6 +75,7 @@ public class AdminControllerJPA {
         }
     }
 
+//agrega un admin
     @PostMapping("")
     public ResponseEntity<?> addAdmin(@RequestBody Admin admin){
         try{
@@ -81,6 +86,7 @@ public class AdminControllerJPA {
         }
     }
 
+//elimina un admin
     @DeleteMapping("/{id}")
     public ResponseEntity<?> deleteAdmin(@PathVariable Long id_admin){
         try {
@@ -91,6 +97,7 @@ public class AdminControllerJPA {
         }
     }
 
+//Actualiza un admin
     @PutMapping("/{id_admin}")
     public ResponseEntity<?> updateAdmin(@PathVariable Long id_admin, @RequestBody Admin updateAdmin){
         try {
@@ -101,13 +108,30 @@ public class AdminControllerJPA {
         }
     }
 
+//habilita una cuenta de usuario
     @PutMapping("/modifyAvaibleAccount/{id_user}")
-    public ResponseEntity<?> modifyAvaibleAccount(@PathVariable Long id_user, @RequestBody boolean avaible){
+    public ResponseEntity<?> modifyAvaibleAccount(@PathVariable Long id_user){
         try {
-            return ResponseEntity.status(HttpStatus.OK).body(adminService.avaibleUserAccount(id_user,avaible));
+            return ResponseEntity.status(HttpStatus.OK).body(adminService.avaibleUserAccount(id_user));
         }
         catch (Exception e){
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Error al actualizar el administrador");
         }
+    }
+
+//Desabilita una cuenta de usuario
+    @PutMapping("/modifyDisableAccount/{id_user}")
+    public ResponseEntity<?> modifyDisableAccount(@PathVariable Long id_user){
+        try {
+            return ResponseEntity.status(HttpStatus.OK).body(adminService.disableUserAccount(id_user));
+        }
+        catch (Exception e){
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Error al actualizar el administrador");
+        }
+    }
+
+    @GetMapping("/getTotalBilling/{month1}/{month2}/{year}")
+    public ResponseEntity<?> getBilling_Xmonths_Xyear(@PathVariable String month1, @PathVariable String month2, @PathVariable String year){
+        return ResponseEntity.status(HttpStatus.OK).body(adminService.getBilling_Xmonths_Xyear(month1, month2, year));
     }
 }

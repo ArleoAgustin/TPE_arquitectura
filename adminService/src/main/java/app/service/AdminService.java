@@ -4,6 +4,7 @@ import app.DTO.AdminDTO;
 import app.DTO.TariffDTO;
 import app.model.classs.Maintenance;
 import app.model.classs.Scooter;
+import app.model.classs.Travel;
 import app.model.classs.User;
 import app.model.entities.Admin;
 import app.model.entities.Tariff;
@@ -186,27 +187,27 @@ public class AdminService {
 
 //modifica la disponibilidad de la cuenta de un determinado usuario
 
-    public ResponseEntity avaibleUserAccount(Long id_user, boolean avaible){
+    public ResponseEntity avaibleUserAccount(Long id_user){
 
         HttpHeaders headers = new HttpHeaders();
         HttpEntity<Void> requestEntity = new HttpEntity<>(headers);
 
         ResponseEntity<User> response = restTemplate.exchange(
                 "http://localhost:8080/user/enableAccount/"+ id_user, //cambie a enable en url
-                HttpMethod.GET,
+                HttpMethod.PUT,
                 requestEntity,
                 new ParameterizedTypeReference<User>() {}
         );
         return  response;   //TODO esto tiene que estar en implementar en user con este endpoint "http://localhost:8080/user/enableAccount"+ id_user
     }
 
-    public ResponseEntity disableUserAccount(Long id_user, boolean disable){
+    public ResponseEntity disableUserAccount(Long id_user){
         HttpHeaders headers = new HttpHeaders();
         HttpEntity<Void> requestEntity = new HttpEntity<>(headers);
 
         ResponseEntity<User> response = restTemplate.exchange(
                 "http://localhost:8080/user/disableAccount/"+ id_user,
-                HttpMethod.GET,
+                HttpMethod.PUT,
                 requestEntity,
                 new ParameterizedTypeReference<User>() {}
         );
@@ -226,6 +227,21 @@ public class AdminService {
         headers.setContentType(MediaType.APPLICATION_JSON);
         return response;
     }
+
+    public ResponseEntity getBilling_Xmonths_Xyear(String m1, String m2, String y){
+
+        HttpHeaders headers = new HttpHeaders();
+        HttpEntity<Void> requestEntity = new HttpEntity<>(headers);
+        ResponseEntity<Integer> response = restTemplate.exchange(
+                "http://localhost:8084/travel/getBillingByMonthsByYear/" + m1 + "/" + m2 + "/" + y,
+                HttpMethod.GET,
+                requestEntity,
+                Integer.class
+        );
+        headers.setContentType(MediaType.APPLICATION_JSON);
+        return response;
+    }
+
 
 
 }
