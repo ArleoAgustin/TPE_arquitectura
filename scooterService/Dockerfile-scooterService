@@ -1,0 +1,18 @@
+
+# Usa una imagen base de Java
+FROM openjdk:11
+
+# Establece el directorio de trabajo en el contenedor
+WORKDIR /app
+
+# Copia el archivo JAR de tu aplicación Spring Boot al contenedor
+COPY target/tu-aplicacion.jar /app/app.jar
+
+# Expone el puerto en el que se ejecutará tu aplicación (si es necesario)
+EXPOSE 8083
+
+# Comando para ejecutar tu aplicación al iniciar el contenedor
+CMD ["java", "-jar", "app.jar"]
+
+LABEL authors="lulo"
+

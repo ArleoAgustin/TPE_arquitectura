@@ -11,15 +11,6 @@ services:
 #      - user_Db
 #    container_name: container_userService
 
-#  scooter_service:
-#    build:
-#      context: ./
-#      dockerfile: Dockerfile-scooterService
-#    ports:
-#      - "8083:8080"
-#    depends_on:
-#      - scooter_Db
-#    container_name: container_scooterService
 
 #  travel_service:
 #    build:
@@ -41,6 +32,15 @@ services:
 #      - stopping_Db
 #    container_name: container_stoppingService
 
+#  scooter_service:
+#    build:
+#      context: https://github.com/ArleoAgustin/TPE_arquitectura/tree/main/scooterService                            # Ruta al contexto de construcción (donde están los archivos para construir la imagen)
+#      dockerfile: Dockerfile-scooterService  # Nombre del archivo Dockerfile a utilizar
+#    ports:
+#      - "8083:8080"
+#    depends_on:
+#      - scooter_db
+#    container_name: container_scooterService
 #-----------------------------------------------BASES DE DATOS ---------------------------------------------
   user_Db:
     image: mysql:latest
