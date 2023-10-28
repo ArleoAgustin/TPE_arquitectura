@@ -52,6 +52,8 @@ public class TravelContollerJPA {
         }
     }
 
+//Como administrador quiero consultar los monopatines con más de X viajes en un cierto año.
+
     @GetMapping("/scootersWithMoreThanXin/{numTravels}/{year}")
     public  ResponseEntity<?> getScootersByTravelsInYear(@PathVariable Integer numTravels, @PathVariable Integer year){
         try {
@@ -63,6 +65,13 @@ public class TravelContollerJPA {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("no se encontraron monopatines con viajes en ese anio");
         }
     }
+
+    //obtiene lo facturado en un rango de meses de un determinado año
+
+    @GetMapping("/getTotalBilling/{month1}/{month2}/{year}")
+    public ResponseEntity<?> getBilling_Xmonths_Xyear(@PathVariable String month1, @PathVariable String month2, @PathVariable String year){
+        return ResponseEntity.status(HttpStatus.OK).body(travelService.getBilling_Xmonths_Xyear(month1, month2, year));
+    }   //hacer getBilling_Xmonths_Xyear()
 
 }
 /*todo:

@@ -24,4 +24,17 @@ public class TariffControllerJPA {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Error al insertar una tarifa");
         }
     }
+
+    //ajusta la tarifa
+
+    @PutMapping("/adjustmentPrice/{id_tariff}")
+    public ResponseEntity<?> adjustmentPrice(@RequestBody Tariff newTariff, @PathVariable Long id_tariff){
+        return ResponseEntity.status(HttpStatus.OK).body(tariffService.adjustmentPrice(newTariff, id_tariff));
+    }
+
+    @GetMapping("/currentPrice")
+    public ResponseEntity<?> currentPrice(){
+        return ResponseEntity.status(HttpStatus.OK).body(tariffService.getTariffActive());
+    }
+
 }

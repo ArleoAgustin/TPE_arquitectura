@@ -14,6 +14,9 @@ public class Tariff {
     private Long id;
 
     @Column
+    private String nameTariff;
+
+    @Column
     private Double price;
 
     @Column
@@ -28,6 +31,30 @@ public class Tariff {
     public Tariff(Double value, Double valuePauseExt, Date effectiveDate) {
         this.price = value;
         this.pricePauseExt = valuePauseExt;
+        this.effectiveDate = effectiveDate;
+    }
+
+    public Double getPrice() {
+        return price;
+    }
+
+    public void setPrice(Double price) {
+        this.price = price;
+    }
+
+    public Double getPricePauseExt() {
+        return pricePauseExt;
+    }
+
+    public void setPricePauseExt(Double pricePauseExt) {
+        this.pricePauseExt = pricePauseExt;
+    }
+
+    public Date getEffectiveDate() {
+        return effectiveDate;
+    }
+
+    public void setEffectiveDate(Date effectiveDate) {
         this.effectiveDate = effectiveDate;
     }
 }

@@ -14,8 +14,12 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class UserService {
 
+
     private final UserRepository userRepository;
     private final RestTemplate restTemplate;
+
+    public static final Character AVALIABLE = 'A';
+    public static final Character DISABLED = 'D';
 
     @Transactional(readOnly = true)
     public List<User> findAll(){
@@ -50,7 +54,7 @@ public class UserService {
             User user = optionalUser.get();
 
             //cambió el estado a 'd',preguntar si manejamos asi este estado
-            user.setState('d');
+            user.setState(DISABLED);
 
             //guardo en la bd
             userRepository.save(user);
@@ -61,6 +65,8 @@ public class UserService {
         }
     }
 
+
+
     @Transactional
     public User enableAccount(Long userId) {
         Optional<User> optionalUser = userRepository.findById(userId);
@@ -69,7 +75,7 @@ public class UserService {
             User user = optionalUser.get();
 
             //cambió el estado a 'e',preguntar si manejamos asi este estado
-            user.setState('e');
+            user.setState(AVALIABLE);
 
             //guardo en la bd
             userRepository.save(user);
