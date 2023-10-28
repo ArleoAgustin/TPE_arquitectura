@@ -3,10 +3,16 @@ version: '3'
 services:
 
 #----------------------------------------SERVICIOS---------------------------------------------------------
+#ports services 
+  #user 8081
+  #admin 8082
+  #scooter 8083
+  #travel 8084
+  #stopping 8085
 
 #  user_service:
 #    ports:
-#      - "8082:8080"
+#      - "8081:8080"
 #    depends_on:
 #      - user_Db
 #    container_name: container_userService

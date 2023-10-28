@@ -44,9 +44,9 @@ public class TravelService {
     @Transactional
     public Travel addTravel(Long userDNI, Long scooterId) {
 
-        String userURL = "https://puerto y endpoint"+ userDNI;
-        String scooterURL = "https://scooter/"+scooterId;
-        String tariffURL = "https://getTariff";
+        String userURL = "https://localhost:8082/user/"+ userDNI;
+        String scooterURL = "https://localhost:8083/scooter/"+scooterId;
+        String tariffURL = "https://localhost:80";
         //todo manejar los timeOut de las request
         User user = restTemplate.getForObject(userURL, User.class);
         Scooter scooter = restTemplate.getForObject(scooterURL, Scooter.class);
