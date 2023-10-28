@@ -1,6 +1,5 @@
 package app.Controller;
 
-import app.DTO.AdminDTO;
 import app.model.classs.Scooter;
 import app.model.entities.Admin;
 import app.model.entities.Tariff;
@@ -24,8 +23,12 @@ public class AdminControllerJPA {
 //obtiene todos los administradores
 
     @GetMapping("")
-    public List<AdminDTO> findAll() {
-        return this.adminService.findAll();
+    public ResponseEntity<?> findAll() {
+        try{
+        return ResponseEntity.status(HttpStatus.OK).body(adminService.findAll());
+        }catch (Exception e){
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Error al obtener todos los administradores.");
+        }
     }
 
 //ajusta la tarifa
@@ -104,10 +107,10 @@ public class AdminControllerJPA {
 
 //elimina un admin
 
-    @DeleteMapping("/{id}")
+    @DeleteMapping("/{id_admin}")
     public ResponseEntity<?> deleteAdmin(@PathVariable Long id_admin){
         try {
-            return ResponseEntity.status(HttpStatus.NO_CONTENT).body(adminService.delete(id_admin));
+            return ResponseEntity.status(HttpStatus.OK).body(adminService.delete(id_admin));
         }
         catch (Exception e){
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Error: no se pudo eliminar el administrador");
