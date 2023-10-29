@@ -67,10 +67,9 @@ public class TravelContollerJPA {
     }
 
     //obtiene lo facturado en un rango de meses de un determinado año
-
-    @GetMapping("/getTotalBilling/{month1}/{month2}/{year}")
-    public ResponseEntity<?> getBilling_Xmonths_Xyear(@PathVariable String month1, @PathVariable String month2, @PathVariable String year){
-        return ResponseEntity.status(HttpStatus.OK).body(travelService.getBilling_Xmonths_Xyear(month1, month2, year));
-    }   //hacer getBilling_Xmonths_Xyear()
+    @GetMapping("/getTotalBillingBetween")
+    public ResponseEntity<?> getTotalBillingBetween(@RequestParam("month1") Integer month1, @RequestParam("month2") Integer month2, @RequestParam("year") Integer year){
+        return ResponseEntity.status(HttpStatus.OK).body(travelService.getBillingBetweenIn(year, month1, month2));
+    }
 
 }

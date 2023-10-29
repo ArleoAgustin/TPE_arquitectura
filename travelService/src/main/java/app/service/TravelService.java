@@ -14,6 +14,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.client.RestTemplate;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -72,5 +73,11 @@ public class TravelService {
         List<Long> scootersId = this.travelRepository.findScootersWithMoreThanXTravelsInYear(travels, year);
         if(scootersId.isEmpty())return null;
         return scootersId;
+    }
+
+    public Double getBillingBetweenIn(Integer year, Integer month1, Integer month2) {
+        LocalDateTime startDate = LocalDateTime.of(year, month1, 1, 0, 0);
+        LocalDateTime endDate = LocalDateTime.of(year, month2, 1, 0, 0);
+        return this.travelRepository.getTotalBillingBetween(startDate, endDate);
     }
 }

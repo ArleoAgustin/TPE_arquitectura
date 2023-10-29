@@ -19,4 +19,11 @@ public interface TravelRepository extends JpaRepository<Travel,Long> {
                                                       @Param("year") Integer year
     );
 
+    @Query("SELECT SUM(t.finalPrice) FROM Travel t WHERE t.date >= :start AND t.date <= :end")
+    Double getTotalBillingBetween(
+            @Param("start") LocalDateTime start,
+            @Param("end") LocalDateTime end
+    );
+
+
 }
