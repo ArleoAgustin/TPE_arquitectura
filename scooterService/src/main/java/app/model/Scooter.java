@@ -3,7 +3,9 @@ package app.model;
 
 import jakarta.persistence.*;
 import lombok.Data;
- @Entity
+import lombok.Getter;
+
+@Entity
  @Data
 public class Scooter {
 
@@ -12,22 +14,29 @@ public class Scooter {
         public static final Character DISABLED = 'D';
         public static final Character IN_MANTENIENCE = 'M';
 
+        @Getter
         @Id
         @GeneratedValue(strategy = GenerationType.IDENTITY)
         private Long id;
 
+        @Getter
         @Column(nullable = false)
         private Character state;
 
+        @Getter
         @Column(nullable = false)
         private String ubication;
 
+         @Getter
          @Column(nullable = false)
          private Double km;
 
+         @Getter
          @Column(nullable = false)
          private Integer countTravel;
 
+         @Column
+         private Double timeInPause;
 
      public Scooter(Scooter scooter) {
      }
@@ -41,39 +50,19 @@ public class Scooter {
 
      public Scooter() {}
 
-     public Long getId() {
-         return id;
-     }
-
-     public Character getState() {
-         return state;
-     }
-
-     public void setState(Character state) {
+    public void setState(Character state) {
          this.state = state;
      }
 
-     public String getUbication() {
-         return ubication;
-     }
-
-     public void setUbication(String ubication) {
+    public void setUbication(String ubication) {
          this.ubication = ubication;
      }
 
-     public Double getKm() {
-         return km;
-     }
-
-     public void setKm(Double km) {
+    public void setKm(Double km) {
          this.km = km;
      }
 
-     public Integer getCountTravel() {
-         return countTravel;
-     }
-
-     public void setCountTravel(Integer countTravel) {
+    public void setCountTravel(Integer countTravel) {
          this.countTravel = countTravel;
      }
  }

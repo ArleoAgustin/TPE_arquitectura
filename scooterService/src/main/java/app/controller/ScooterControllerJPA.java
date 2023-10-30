@@ -1,6 +1,7 @@
 package app.controller;
 
 
+import app.DTOs.ScooterReportByKm;
 import app.model.Scooter;
 import app.service.ScooterService;
 import lombok.RequiredArgsConstructor;
@@ -74,7 +75,7 @@ public class ScooterControllerJPA {
         }
     }
 
-    @GetMapping("byStatus")
+    @GetMapping("/byStatus")
     public ResponseEntity<?> getScootersByStatus(){
         HashMap<String,List<Scooter>> scooters = new HashMap<>();
         try {
@@ -87,5 +88,22 @@ public class ScooterControllerJPA {
         }
     }
 
+    /*generar un reporte de uso de monopatines por kilómetros para establecer si un monopatín requiere de mantenimiento.
+     Este reporte debe poder configurarse para incluir (o no) los tiempos de pausa*/
+
+    @GetMapping("/reportBykms/")
+    public ResponseEntity<?> getReportForKms(@RequestParam("includePauses") Boolean include) {
+        try {
+            List<ScooterReportByKm> scooters = this.scooterService.getReportForKm(include);
+            if (scooters.isEmpty()) {
+                return ResponseEntity.status(HttpStatus.NO_CONTENT).body("no se encontraron monopatines");
+            }
+            return ResponseEntity.status(HttpStatus.OK).body(scooters);
+        }
+        catch (Exception e){
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("servicio no disponible");
+        }
+
+    }
 
 }

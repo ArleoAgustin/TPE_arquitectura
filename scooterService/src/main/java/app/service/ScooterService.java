@@ -1,5 +1,6 @@
 package app.service;
 
+import app.DTOs.ScooterReportByKm;
 import app.model.Scooter;
 import app.repository.ScooterRepository;
 import lombok.RequiredArgsConstructor;
@@ -77,4 +78,12 @@ public class ScooterService {
         return scooterRepository.findAllByStateIs(s);
     }
 
+    public List<ScooterReportByKm> getReportForKm(Boolean include) {
+        List<ScooterReportByKm> report = new ArrayList<>();
+        if(include){
+            this.scooterRepository.findAll().forEach(scooter -> report.add(new ScooterReportByKm(scooter.getId(), scooter.getKm()));
+            );
+        }else
+            return this.scooterRepository.getReportForKm();
+    }
 }
