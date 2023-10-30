@@ -15,4 +15,6 @@ public interface ScooterRepository extends JpaRepository<Scooter, Long>{
 
     List<Scooter> findAllByStateIs(Character m);
     List<Scooter> findScootersByCountTravelIsGreaterThan(Integer i);
+
+    List<Scooter> findAllByUbicationEquals(String ubication);
 }

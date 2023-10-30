@@ -86,4 +86,8 @@ public class ScooterService {
         }else
             return this.scooterRepository.getReportForKm();
     }
+
+    public List<Scooter> getNearby(String ubication) {
+        return this.scooterRepository.findAllByUbicationEquals(ubication);
+    }
 }

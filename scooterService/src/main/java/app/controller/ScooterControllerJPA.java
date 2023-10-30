@@ -106,4 +106,19 @@ public class ScooterControllerJPA {
 
     }
 
+    @GetMapping("/getNearby/{ubication}")
+    public ResponseEntity<?> getNearby(@PathVariable String ubication){
+        try {
+            List<Scooter> scooters = this.scooterService.getNearby(ubication);
+            if (scooters.isEmpty()) {
+                return ResponseEntity.status(HttpStatus.NO_CONTENT).body("no se encontraron monopatines");
+            }
+            return ResponseEntity.status(HttpStatus.OK).body(scooters);
+        }
+        catch (Exception e){
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("servicio no disponible");
+        }
+
+    }
+
 }

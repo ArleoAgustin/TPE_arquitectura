@@ -3,12 +3,11 @@ package app.DTOs;
 import lombok.Getter;
 import lombok.Setter;
 
+@Getter
 public class ScooterReportByKm {
 
-    @Getter
     private final Long scooterId;
 
-    @Getter
     @Setter
     private Double kms;
 
