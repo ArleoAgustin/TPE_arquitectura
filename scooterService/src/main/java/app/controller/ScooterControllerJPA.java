@@ -24,7 +24,7 @@ public class ScooterControllerJPA {
     public ResponseEntity<?> findAll() {
         List<Scooter> scooterList = this.scooterService.findAll();
         if (scooterList.isEmpty()){
-            return ResponseEntity.status(204).build();
+            return ResponseEntity.status(204).body("no se encontraron resultados");
         }
         return ResponseEntity.status(HttpStatus.OK).body(scooterList);
     }

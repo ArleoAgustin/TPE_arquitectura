@@ -40,7 +40,7 @@ services:
 
 #  scooter_service:
 #    build:
-#      context: https://github.com/ArleoAgustin/TPE_arquitectura/tree/main/scooterService                            # Ruta al contexto de construcción (donde están los archivos para construir la imagen)
+#      context: # Ruta al contexto de construcción (donde están los archivos para construir la imagen)
 #      dockerfile: Dockerfile-scooterService  # Nombre del archivo Dockerfile a utilizar
 #    ports:
 #      - "8083:8080"

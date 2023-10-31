@@ -26,7 +26,7 @@ public class ScooterService {
 
     @Transactional(readOnly = true)
     public List<Scooter> findAll(){
-        return this.scooterRepository.findAll().stream().map(Scooter::new).toList();
+        return this.scooterRepository.findAll();
     }
 
     public Scooter save(Scooter scooter) throws Exception {
