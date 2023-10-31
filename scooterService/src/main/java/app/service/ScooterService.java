@@ -1,6 +1,7 @@
 package app.service;
 
 import app.DTOs.ScooterReportByKm;
+import app.DTOs.ScooterReportByKmAndTimePaused;
 import app.model.Scooter;
 import app.repository.ScooterRepository;
 import lombok.RequiredArgsConstructor;
@@ -78,13 +79,17 @@ public class ScooterService {
         return scooterRepository.findAllByStateIs(s);
     }
 
-    public List<ScooterReportByKm> getReportForKm(Boolean include) {
+    public List<ScooterReportByKm> getReportForKm(Boolean include, double kms) {
         List<ScooterReportByKm> report = new ArrayList<>();
-        if(include){
-            this.scooterRepository.findAll().forEach(scooter -> report.add(new ScooterReportByKm(scooter.getId(), scooter.getKm()));
-            );
+
+        if(!include){
+            this.scooterRepository.getAllOrderByCantKm(kms).forEach(scooter ->
+                    report.add(new ScooterReportByKm(scooter.getId(), scooter.getKm())));
+            return report;
         }else
-            return this.scooterRepository.getReportForKm();
+            this.scooterRepository.getAllOrderByCantKm(kms).forEach(scooter ->
+                    report.add(new ScooterReportByKm(scooter.getId(), scooter.getKm(), scooter.getTimeInPause())));
+        return report;
     }
 
     public List<Scooter> getNearby(String ubication) {

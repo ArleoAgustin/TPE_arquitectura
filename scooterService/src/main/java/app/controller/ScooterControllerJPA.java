@@ -91,10 +91,10 @@ public class ScooterControllerJPA {
     /*generar un reporte de uso de monopatines por kilómetros para establecer si un monopatín requiere de mantenimiento.
      Este reporte debe poder configurarse para incluir (o no) los tiempos de pausa*/
 
-    @GetMapping("/reportBykms/")
-    public ResponseEntity<?> getReportForKms(@RequestParam("includePauses") Boolean include) {
+    @GetMapping("/reportBykms/{kms}/")
+    public ResponseEntity<?> getReportForKms(@RequestParam("includePauses") Boolean include, @PathVariable double kms) {
         try {
-            List<ScooterReportByKm> scooters = this.scooterService.getReportForKm(include);
+            List<ScooterReportByKm> scooters = this.scooterService.getReportForKm(include, kms);
             if (scooters.isEmpty()) {
                 return ResponseEntity.status(HttpStatus.NO_CONTENT).body("no se encontraron monopatines");
             }
