@@ -42,6 +42,7 @@ public class TravelContollerJPA {
         }
     }
 
+//REVISAR
     @PostMapping("")
     public ResponseEntity<?> addTravel(@RequestBody Long userDNI, @RequestBody Long scooterId) {
         try{

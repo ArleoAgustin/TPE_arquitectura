@@ -27,6 +27,15 @@ public class AdminControllerJPA {
         }
     }
 
+    @GetMapping("/getAllRol")
+    public ResponseEntity<?> findAllRol() {
+        try{
+            return ResponseEntity.status(HttpStatus.OK).body(adminService.getAllRol());
+        }catch (Exception e){
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Error al obtener todos los roles.");
+        }
+    }
+
 
 //agrega un admin
 
@@ -40,6 +49,16 @@ public class AdminControllerJPA {
         }
     }
 
+    @PostMapping("/addRol")
+    public ResponseEntity<?> addRol(@RequestBody String nameRol){
+        try{
+            return ResponseEntity.status(HttpStatus.OK).body(adminService.addRol(nameRol));
+        }
+        catch (Exception e){
+            return  ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Error: no se pudo agregar el rol");
+        }
+    }
+
 
 //elimina un admin
 
@@ -47,6 +66,17 @@ public class AdminControllerJPA {
     public ResponseEntity<?> deleteAdmin(@PathVariable Long id_admin){
         try {
             return ResponseEntity.status(HttpStatus.OK).body(adminService.delete(id_admin));
+        }
+        catch (Exception e){
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Error: no se pudo eliminar el administrador");
+        }
+    }
+
+
+    @DeleteMapping("/deleteRol/{id_rol}")
+    public ResponseEntity<?> deleteRol(@PathVariable Long id_rol){
+        try {
+            return ResponseEntity.status(HttpStatus.OK).body(adminService.deleteRol(id_rol));
         }
         catch (Exception e){
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Error: no se pudo eliminar el administrador");
@@ -64,4 +94,6 @@ public class AdminControllerJPA {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Error al actualizar el administrador");
         }
     }
+
+
 }

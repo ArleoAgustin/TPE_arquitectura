@@ -8,52 +8,53 @@ import lombok.Data;
 public class Admin {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long dni;
 
-    @Column(nullable = false)
-    private String apellido;
+    @Column
+    private String lastName;
 
-    @Column(nullable = false)
-    private String nombre;
+    @Column
+    private String name;
 
-    @ManyToOne
-    @JoinColumn(name = "id_role")
-    private Role rol;
+    @Column
+    private String role;
 
     public Admin() {
 
     }
 
-    public String getApellido() {
-        return apellido;
-    }
-
-    public void setApellido(String apellido) {
-        this.apellido = apellido;
-    }
-
-    public String getNombre() {
-        return nombre;
-    }
-
-    public void setNombre(String nombre) {
-        this.nombre = nombre;
-    }
-
-    public Role getRol() {
-        return rol;
-    }
-
-    public void setRol(Role rol) {
-        this.rol = rol;
-    }
-
-    public void setDni(Long dni) {
+    public Admin(Long dni, String lastName, String name, String role) {
         this.dni = dni;
+        this.lastName = lastName;
+        this.name = name;
+        this.role = role;
     }
 
     public Long getDni() {
         return dni;
+    }
+
+    public String getLastName() {
+        return lastName;
+    }
+
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getRole() {
+        return role;
+    }
+
+    public void setRole(String  role) {
+        this.role = role;
     }
 }

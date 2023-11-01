@@ -14,6 +14,7 @@ public class Role {
     @Column
     private String nameRole;
 
+
     public Role(String nameRole) {
         this.nameRole = nameRole;
     }
