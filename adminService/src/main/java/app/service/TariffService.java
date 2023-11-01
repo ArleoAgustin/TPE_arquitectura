@@ -5,10 +5,12 @@ import app.model.entities.Admin;
 import app.model.entities.Tariff;
 import app.repository.TariffRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -18,16 +20,36 @@ public class TariffService {
     private final TariffRepository tariffRepository;
     private final RestTemplate restTemplate;
 
-    public ResponseEntity<?> save(Tariff tariff) throws Exception {    //verificar
+    public List<Tariff> findAll(){
+
+        return tariffRepository.findAll();
+    }
+
+
+    public ResponseEntity<?> save(Tariff tariff) throws Exception {
         try {
-            tariffRepository.save(tariff);
-            return ResponseEntity.ok("Tarifa agregada");
+
+            if (!tariffRepository.existsByNameTariff(tariff.getNameTariff())) {
+                tariffRepository.save(tariff);
+                return ResponseEntity.ok("Tarifa agregada");
+            }
+            else
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Ya existe una tarifa con ese nombre");
         }
         catch (Exception e){
             throw new Exception(e.getMessage());
         }
     }
 
+    public  ResponseEntity<?> delete(Long id_tariff){
+
+        if (tariffRepository.existsById(id_tariff)){
+            tariffRepository.deleteById(id_tariff);
+            return ResponseEntity.status(HttpStatus.OK).body("Tarifa eliminada correctamente");
+        }
+        else
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("La tarifa no existe");
+    }
 
 
     public Tariff getTariffActive(){

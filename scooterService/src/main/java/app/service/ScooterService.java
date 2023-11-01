@@ -95,4 +95,12 @@ public class ScooterService {
     public List<Scooter> getNearby(String ubication) {
         return this.scooterRepository.findAllByUbicationEquals(ubication);
     }
+
+
+    public List<Scooter> getListScooter(List<Long> ids_Scooters){
+
+        return scooterRepository.findAllByIdIn(ids_Scooters);
+
+    }
+
 }

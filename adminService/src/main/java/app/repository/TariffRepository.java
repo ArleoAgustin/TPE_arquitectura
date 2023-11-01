@@ -8,4 +8,6 @@ public interface TariffRepository extends JpaRepository<Tariff, Long> {
 
     @Query("SELECT t FROM Tariff t WHERE t.nameTariff = 'normal'")
     Tariff getTariffCurrent();
+
+    boolean existsByNameTariff(String name);
 }

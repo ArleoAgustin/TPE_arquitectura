@@ -34,6 +34,21 @@ public class Tariff {
         this.effectiveDate = effectiveDate;
     }
 
+    public Tariff(Tariff t){
+        this.nameTariff = t.getNameTariff();
+        this.price = t.getPrice();
+        this.pricePauseExt = t.getPricePauseExt();
+        this.effectiveDate = t.getEffectiveDate();
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public String getNameTariff() {
+        return nameTariff;
+    }
+
     public Double getPrice() {
         return price;
     }

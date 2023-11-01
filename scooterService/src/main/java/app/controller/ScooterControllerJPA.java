@@ -121,4 +121,19 @@ public class ScooterControllerJPA {
 
     }
 
+
+    @GetMapping("/getAllByIds")
+    public ResponseEntity<?> getViajesPorIds(@RequestParam List<Long> ids) {
+        if (ids != null && !ids.isEmpty()) {
+            List<Scooter> scooters = scooterService.getListScooter(ids);
+            if (!scooters.isEmpty()) {
+                return ResponseEntity.status(HttpStatus.OK).body(scooters);
+            } else {
+                return ResponseEntity.status(HttpStatus.NO_CONTENT).body("No se encontraron monopatines");
+            }
+        } else {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Lista de IDs vacía o nula");
+        }
+    }
+
 }

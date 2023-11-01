@@ -38,20 +38,33 @@ public class Travel implements Serializable {
     private Double finalPrice;
 
     public Travel(Double tariff, Long userDNI, Long scooterID) {
+        this.date = LocalDateTime.now();
         this.start = LocalDateTime.now();
-        this.kmTraveled = 0.0;
+        this.kmTraveled = Math.random() * 50;
         this.tariff = tariff;
         this.userDNI = userDNI;
         this.scooterID = scooterID;
+        this.finalPrice = kmTraveled * getTariff();
     }
 
     public Travel(){
+        this.date = LocalDateTime.now();
         this.start = LocalDateTime.now();
-        this.kmTraveled = 0.0;
-        this.finalPrice = 0.0;
+        this.kmTraveled = Math.random() * 50;
+
     }
 
-    public Travel(Travel travel) {
+
+    public Travel(Travel nT) {
+        this.id = nT.getId();
+        this.date = nT.getDate();
+        this.start = nT.getStart();
+        this.end = nT.getEnd();
+        this.kmTraveled = Math.random() * 50;
+        this.tariff = nT.getTariff();
+        this.userDNI = nT.getUserDNI();
+        this.scooterID = nT.getScooterID();
+        this.finalPrice = kmTraveled * getTariff();
     }
 
     public void setDate(LocalDateTime date) {

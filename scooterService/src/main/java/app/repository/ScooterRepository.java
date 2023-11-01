@@ -21,4 +21,6 @@ public interface ScooterRepository extends JpaRepository<Scooter, Long>{
 
     @Query("SELECT s FROM Scooter s WHERE s.km >= :kms ORDER BY s.km DESC")
     List<Scooter> getAllOrderByCantKm(@Param("kms") double kms);
+
+    List<Scooter> findAllByIdIn(List<Long> scooterIds);
 }
