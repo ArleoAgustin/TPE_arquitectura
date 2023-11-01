@@ -3,14 +3,13 @@ package app.controllers;
 import app.model.User;
 import app.service.UserService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.dao.DataAccessException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("users")
+@RequestMapping("user")
 @RequiredArgsConstructor
 public class UserControllerJPA {
 
@@ -38,20 +37,10 @@ public class UserControllerJPA {
 //elimina un usuario
 
     @DeleteMapping("/{userId}")
-    public ResponseEntity<?> deleteUserById(@PathVariable Long userId) {
-        try {
-            boolean deleted = userService.deleteUser(userId);
-            if (deleted) {
-                return ResponseEntity.status(HttpStatus.OK).body("Usuario eliminado correctamente");
-            } else {
-                return ResponseEntity.status(HttpStatus.NOT_FOUND).body("El usuario no existe");
-            }
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error al eliminar el usuario");
-        }
+    public ResponseEntity<?> deleteUser(@PathVariable Long userId) throws Exception {
+
+        return userService.deleteUser(userId);
     }
-
-
 
 //deshabilita una cuenta
 
@@ -68,35 +57,15 @@ public class UserControllerJPA {
         return userService.enableAccount(userId);
     }
 
-    //Actualizar usuario
-    @PutMapping("/{userId}")
-    public ResponseEntity<?> updateUser(@PathVariable Long userId, @RequestBody User updatedUser) {
-        try {
-            User user = userService.updateUser(userId, updatedUser);
-            if (user != null) {
-                return ResponseEntity.ok(user);
-            } else {
-                return ResponseEntity.status(HttpStatus.NOT_FOUND).body("No se encontró el usuario");
-            }
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error al tratar de actualizar el usuario");
-        }
-    }
-
 //obtiene un usuario por id
+
     @GetMapping("/{userId}")
-    public ResponseEntity<?> getUserById(@PathVariable Long userId) {
-        try {
-            User user = userService.getUserById(userId);
-            if (user != null) {
-                return ResponseEntity.ok(user);
-            } else {
-                return ResponseEntity.status(HttpStatus.NOT_FOUND).body("El usuario no fue encontrado");
-            }
-        } catch (DataAccessException e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error al tratar de acceder a la base de datos");
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Ocurrió un error");
+    public ResponseEntity<?> getUserById(@PathVariable Long userId) throws Exception {
+        User user = userService.getUserById(userId);
+        if (user != null) {
+            return ResponseEntity.ok(user); // Usuario encontrado, se devuelve en la respuesta
+        } else {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("El usuario no existe");
         }
     }
 

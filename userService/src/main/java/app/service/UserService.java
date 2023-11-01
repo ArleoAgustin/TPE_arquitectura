@@ -3,7 +3,6 @@ package app.service;
 import app.repository.UserRepository;
 import app.model.User;
 import lombok.RequiredArgsConstructor;
-import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -30,30 +29,19 @@ public class UserService {
     }
 
 
-    public boolean deleteUser(Long userId) {
-        if (userRepository.existsById(userId)) {
-            userRepository.deleteById(userId);
-            return true;
-        } else {
-            return false;
-        }
+    @Transactional
+    public ResponseEntity<?> deleteUser(Long id) throws Exception {
+
+        try {
+            if (userRepository.existsById(id)) {
+                userRepository.deleteById(id);
+                return ResponseEntity.status(HttpStatus.OK).body("Usuario eliminado correctamente");
+            }
+        }catch (Exception e){
+                throw new Exception(e.getMessage());
+            }
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("El usuario no existe");
     }
-
-    public User updateUser(Long userId, User updatedUser) {
-        Optional<User> existingUser = userRepository.findById(userId);
-        if (existingUser.isPresent()) {
-            User userToUpdate = existingUser.get();
-            userToUpdate.setName(updatedUser.getName());
-            userToUpdate.setLastName(updatedUser.getLastName());
-            userToUpdate.setEmail(updatedUser.getEmail());
-            userToUpdate.setNumberPhone(updatedUser.getNumberPhone());
-            userToUpdate.setStartDate(updatedUser.getStartDate());
-            return userRepository.save(userToUpdate);
-        }
-        return null;
-    }
-
-
 
     public ResponseEntity<?> save(User user) throws Exception {
         try {
