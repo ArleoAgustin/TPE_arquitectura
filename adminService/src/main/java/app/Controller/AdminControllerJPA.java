@@ -1,5 +1,6 @@
 package app.Controller;
 
+import app.DTO.AdminDTO;
 import app.model.entities.Admin;
 import app.service.AdminService;
 import lombok.RequiredArgsConstructor;
@@ -21,7 +22,11 @@ public class AdminControllerJPA {
     @GetMapping("")
     public ResponseEntity<?> findAll() {
         try{
-        return ResponseEntity.status(HttpStatus.OK).body(adminService.findAll());
+            List<AdminDTO> admins = adminService.findAll();
+            if (!admins.isEmpty())
+                return ResponseEntity.status(HttpStatus.OK).body(admins);
+            else
+                return ResponseEntity.status(204).build();
         }catch (Exception e){
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Error al obtener todos los administradores.");
         }
@@ -32,7 +37,11 @@ public class AdminControllerJPA {
     @GetMapping("/getAllRol")
     public ResponseEntity<?> findAllRol() {
         try{
-            return ResponseEntity.status(HttpStatus.OK).body(adminService.getAllRol());
+            List roles = adminService.getAllRol();
+            if (!roles.isEmpty())
+                return ResponseEntity.status(HttpStatus.OK).body(roles);
+            else
+                return ResponseEntity.status(204).build();
         }catch (Exception e){
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Error al obtener todos los roles.");
         }
@@ -42,62 +51,44 @@ public class AdminControllerJPA {
 //agrega un admin
 
     @PostMapping("")
-    public ResponseEntity<?> addAdmin(@RequestBody Admin admin){
-        try{
-            return ResponseEntity.status(HttpStatus.OK).body(adminService.save(admin));
-        }
-        catch (Exception e){
-            return  ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Error: no se pudo agregar el administrador");
-        }
+    public ResponseEntity<?> addAdmin(@RequestBody Admin admin) throws Exception {
+
+        return ResponseEntity.status(HttpStatus.OK).body(adminService.save(admin));
     }
 
 //agrega un rol
-
+//agregar solo el nombre en formato txt
     @PostMapping("/addRol")
-    public ResponseEntity<?> addRol(@RequestBody String nameRol){
-        try{
-            return ResponseEntity.status(HttpStatus.OK).body(adminService.addRol(nameRol));
-        }
-        catch (Exception e){
-            return  ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Error: no se pudo agregar el rol");
-        }
+    public ResponseEntity<?> addRol(@RequestBody String nameRol) throws Exception {
+
+        return adminService.addRol(nameRol);
+
     }
 
 
 //elimina un admin
 
     @DeleteMapping("/{id_admin}")
-    public ResponseEntity<?> deleteAdmin(@PathVariable Long id_admin){
-        try {
-            return ResponseEntity.status(HttpStatus.OK).body(adminService.delete(id_admin));
-        }
-        catch (Exception e){
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Error: no se pudo eliminar el administrador");
-        }
+    public ResponseEntity<?> deleteAdmin(@PathVariable Long id_admin) throws Exception {
+
+        return adminService.delete(id_admin);
+
     }
 
 //elimina un rol
 
     @DeleteMapping("/deleteRol/{id_rol}")
-    public ResponseEntity<?> deleteRol(@PathVariable Long id_rol){
-        try {
-            return ResponseEntity.status(HttpStatus.OK).body(adminService.deleteRol(id_rol));
-        }
-        catch (Exception e){
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Error: no se pudo eliminar el administrador");
-        }
+    public ResponseEntity<?> deleteRol(@PathVariable Long id_rol) throws Exception {
+
+        return adminService.deleteRol(id_rol);
     }
 
 //Actualiza un admin
 
     @PutMapping("/{id_admin}")
-    public ResponseEntity<?> updateAdmin(@PathVariable Long id_admin, @RequestBody Admin updateAdmin){
-        try {
-            return ResponseEntity.status(HttpStatus.OK).body(adminService.update(id_admin,updateAdmin));
-        }
-        catch (Exception e){
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Error al actualizar el administrador");
-        }
+    public ResponseEntity<?> updateAdmin(@PathVariable Long id_admin, @RequestBody Admin updateAdmin) throws Exception {
+
+        return adminService.update(id_admin,updateAdmin);
     }
 
 

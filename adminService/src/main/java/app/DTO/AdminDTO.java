@@ -12,7 +12,7 @@ public class AdminDTO implements Serializable {
     private Long DNI;
     private String name;
     private String lastName;
-    private String rol;
+    private String role;
 
 
     public AdminDTO(Admin a) {
@@ -20,7 +20,7 @@ public class AdminDTO implements Serializable {
         this.DNI = a.getDni();
         this.name = a.getName();
         this.lastName = a.getLastName();
-       this.rol = a.getRole();
+       this.role = a.getRole();
     }
 
 
