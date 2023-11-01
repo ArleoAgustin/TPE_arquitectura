@@ -26,7 +26,6 @@ public class TravelContollerJPA {
             return ResponseEntity.status(HttpStatus.OK).body(travels);
         else
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Error: no hay viajes");
-        //return travels.isEmpty() ? ResponseEntity.status(HttpStatus.NO_CONTENT).body(travels) : ResponseEntity.status(HttpStatus.OK).body(travels);
     }
 
     @DeleteMapping("/{id}")
@@ -38,7 +37,7 @@ public class TravelContollerJPA {
     @GetMapping("/{id}")
     public ResponseEntity<?> getById(@PathVariable Long id) throws Exception {
 
-        Travel t = new Travel(travelService.getById(id));
+        Travel t = travelService.getById(id);
         if (t != null)
             return ResponseEntity.status(HttpStatus.OK).body(t);
         else
@@ -54,8 +53,8 @@ public class TravelContollerJPA {
 
 //Como administrador quiero consultar los monopatines con más de X viajes en un cierto año.
 
-    @GetMapping("/scootersWithMoreThanXin/{numTravels}/{year}")
-    public  ResponseEntity<?> getScootersByTravelsInYear(@PathVariable Integer numTravels, @PathVariable Integer year) throws Exception {
+    @GetMapping("/scootersWithMoreThanXin")
+    public  ResponseEntity<?> getScootersByTravelsInYear(@RequestParam Integer numTravels, @RequestParam Integer year) throws Exception {
 
             List<Scooter> scooters = travelService.getScootersWithMoreThanTravelsInYear(numTravels, year);
             if (scooters == null)
@@ -67,7 +66,9 @@ public class TravelContollerJPA {
 
     //obtiene lo facturado en un rango de meses de un determinado año
     @GetMapping("/getTotalBillingBetween")
-    public ResponseEntity<?> getTotalBillingBetween(@RequestParam("month1") Integer month1, @RequestParam("month2") Integer month2, @RequestParam("year") Integer year){
+    public ResponseEntity<?> getTotalBillingBetween(@RequestParam("month1") Integer month1,
+                                                    @RequestParam("month2") Integer month2,
+                                                    @RequestParam("year") Integer year){
         return ResponseEntity.status(HttpStatus.OK).body(travelService.getBillingBetweenIn(year, month1, month2));
     }
 

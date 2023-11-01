@@ -49,14 +49,8 @@ public class TravelService {
     }
 
     @Transactional(readOnly = true)
-    public Travel getById(Long id) throws Exception {
-
-        try {
-            Optional<Travel> travel = this.travelRepository.findById(id);
-            return travel.orElse(null);
-        }catch (Exception e){
-            throw new Exception(e.getMessage());
-        }
+    public Travel getById(Long id) {
+        return this.travelRepository.findById(id).orElse(null);
     }
 
     @Transactional
@@ -71,10 +65,6 @@ public class TravelService {
             Scooter scooter = restTemplate.getForObject(scooterURL, Scooter.class);
             Tariff tariff = restTemplate.getForObject(tariffURL,Tariff.class);
 
-            assert user != null;
-            assert scooter != null;
-            assert tariff != null;
-
             if(user.getState().equals(User.AVALIABLE) && scooter.getState().equals(Scooter.AVALIABLE)) {
 
                 Travel travel = new Travel(tariff.getPrice(), userDNI, scooter.getId());
@@ -84,7 +74,7 @@ public class TravelService {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("El usuario o el monopatin no esta disponible");
         }
         catch (Exception e){
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("ERROR");
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
         }
     }
 
@@ -119,19 +109,10 @@ public class TravelService {
         }
     }
 
-
-
-
-
-
-
-
-
     @Transactional(readOnly = true)
     public Double getBillingBetweenIn(Integer year, Integer month1, Integer month2) {
-
         LocalDateTime startDate = LocalDateTime.of(year, month1, 1, 0, 0);
-        LocalDateTime endDate = LocalDateTime.of(year, month2, 1, 0, 0);
+        LocalDateTime endDate = LocalDateTime.of(year, month2, LocalDateTime.MAX.getDayOfMonth(), 0, 0);
         return this.travelRepository.getTotalBillingBetween(startDate, endDate);
     }
 }
