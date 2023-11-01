@@ -6,7 +6,7 @@ import lombok.Setter;
 
 public class ScooterReportByKm {
 
-    private final Long scooterId;
+    private final Long idScooter;
 
 
     private Double kms;
@@ -14,16 +14,20 @@ public class ScooterReportByKm {
     @JsonInclude(value = JsonInclude.Include.NON_NULL)
     private Double timeInPause;
 
-    public ScooterReportByKm(Long scooterId, Double kms) {
-        this.scooterId = scooterId;
+    public ScooterReportByKm(Long idScooter, Double kms) {
+        this.idScooter = idScooter;
         this.kms = kms;
         this.timeInPause = null;
     }
 
-    public ScooterReportByKm(Long scooterId, Double kms, Double timeInPause) {
-        this.scooterId = scooterId;
+    public ScooterReportByKm(Long idScooter, Double kms, Double timeInPause) {
+        this.idScooter = idScooter;
         this.kms = kms;
         this.timeInPause = timeInPause;
+    }
+
+    public Long getIdScooter() {
+        return idScooter;
     }
 
     public Double getTimeInPause() {
