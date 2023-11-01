@@ -58,7 +58,15 @@ public class User {
         this.state = state;
     }
 
-    public User(User user) {}
+    public User(User user) {
+        this.dni = user.getDni();
+        this.name = user.getName();
+        this.lastName = user.getLastName();
+        this.numberPhone = user.getNumberPhone();
+        this.email = user.getEmail();
+        this.startDate = user.getStartDate();
+        this.state = user.getState();
+    }
 
 
 

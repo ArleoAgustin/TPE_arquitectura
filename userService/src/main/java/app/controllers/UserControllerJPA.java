@@ -6,15 +6,16 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
 import java.util.List;
 
 @RestController
-@RequestMapping("users")
+@RequestMapping("user")
 @RequiredArgsConstructor
 public class UserControllerJPA {
 
     private final UserService userService;
+
+//trae todos los usuarios
 
     @GetMapping("")
     public ResponseEntity<?> findAll() {
@@ -25,54 +26,47 @@ public class UserControllerJPA {
         return ResponseEntity.status(HttpStatus.OK).body(userList);
     }
 
+//agrega un usuario
+
     @PostMapping("")
-    public ResponseEntity<?> addUser(@RequestBody User user){
-        try{
-            return ResponseEntity.status(HttpStatus.OK).body(userService.save(user));
-        }
-        catch (Exception e){
-            return  ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Error: no se pudo agregar el usuario");
-        }
+    public ResponseEntity<?> addUser(@RequestBody User user) throws Exception {
+
+        return ResponseEntity.status(HttpStatus.OK).body(userService.save(user));
     }
+
+//elimina un usuario
 
     @DeleteMapping("/{userId}")
-    public ResponseEntity<?> deleteUser(@PathVariable Long userId) {
-        try {
-            userService.deleteUser(userId);
-            return ResponseEntity.status(HttpStatus.OK).body("Usuario eliminado correctamente");
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Error: no se pudo eliminar el usuario");
-        }
+    public ResponseEntity<?> deleteUser(@PathVariable Long userId) throws Exception {
+
+        return userService.deleteUser(userId);
     }
+
+//deshabilita una cuenta
 
     @PutMapping("/disableAccount/{userId}")
-    public ResponseEntity<?> disableAccount(@PathVariable Long userId){
-        User isChanged = (User) userService.disableAccount(userId);
-        if(isChanged != null){
-            return ResponseEntity.status(HttpStatus.OK).build();
-        }
-        else return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Error:No se pudo inhabilitar al usuario");
+    public ResponseEntity<?> disableAccount(@PathVariable Long userId) throws Exception {
+
+            return userService.disableAccount(userId);
     }
+
+//habilita una cuenta
 
     @PutMapping("/enableAccount/{userId}")
-    public ResponseEntity<?> enableAccount(@PathVariable Long userId){
-        User isChanged = (User) userService.enableAccount(userId);
-        if(isChanged != null){
-            return ResponseEntity.status(HttpStatus.OK).build();
-        }
-        else return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Error:No se pudo habilitar al usuario");
+    public ResponseEntity<?> enableAccount(@PathVariable Long userId) throws Exception {
+        return userService.enableAccount(userId);
     }
 
+//obtiene un usuario por id
+
     @GetMapping("/{userId}")
-    public ResponseEntity<User> getUserById(@PathVariable Long userId) {
+    public ResponseEntity<?> getUserById(@PathVariable Long userId) throws Exception {
         User user = userService.getUserById(userId);
         if (user != null) {
             return ResponseEntity.ok(user); // Usuario encontrado, se devuelve en la respuesta
         } else {
-            return ResponseEntity.notFound().build(); // Usuario no encontrado
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("El usuario no existe");
         }
     }
-
-
 
 }

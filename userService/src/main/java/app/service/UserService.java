@@ -3,6 +3,8 @@ package app.service;
 import app.repository.UserRepository;
 import app.model.User;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.client.RestTemplate;
@@ -28,68 +30,80 @@ public class UserService {
 
 
     @Transactional
-    public boolean deleteUser(Long id){
-        if (userRepository.existsById(id)){
-            userRepository.deleteById(id);
-            return true;
-        }
-        return false;
+    public ResponseEntity<?> deleteUser(Long id) throws Exception {
+
+        try {
+            if (userRepository.existsById(id)) {
+                userRepository.deleteById(id);
+                return ResponseEntity.status(HttpStatus.OK).body("Usuario eliminado correctamente");
+            }
+        }catch (Exception e){
+                throw new Exception(e.getMessage());
+            }
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("El usuario no existe");
     }
 
-    public User save(User user) throws Exception {
+    public ResponseEntity<?> save(User user) throws Exception {
         try {
-            User s = userRepository.save(user);
-            return new User(s);
+            if (!userRepository.existsById(user.getDni())) {
+                User s = userRepository.save(user);
+                return ResponseEntity.status(HttpStatus.OK).body("Usuario agregado");
+            }
         }
         catch (Exception e){
             throw  new Exception(e.getMessage());
         }
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("El usuario no pudo ser agregado");
     }
 
     @Transactional
-    public User disableAccount(Long userId) {
-        Optional<User> optionalUser = userRepository.findById(userId);
+    public ResponseEntity<?> disableAccount(Long userId) throws Exception {
 
-        if (optionalUser.isPresent()) {
-            User user = optionalUser.get();
-
-            //cambió el estado a 'd',preguntar si manejamos asi este estado
-            user.setState(DISABLED);
-
-            //guardo en la bd
-            userRepository.save(user);
-
-            return user;
-        } else {
-            return null; // El usuario no se encontró
+        try {
+            Optional<User> optionalUser = userRepository.findById(userId);
+            if (optionalUser.isPresent()) {
+                User user = optionalUser.get();
+                user.setState(DISABLED);
+                userRepository.save(user);
+                return ResponseEntity.status(HttpStatus.OK).body("Cuenta deshabilitada correctamente");
+            }
+        }catch (Exception e){
+            throw  new Exception(e.getMessage());
         }
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("El usuario no existe");
     }
 
 
 
     @Transactional
-    public User enableAccount(Long userId) {
+    public ResponseEntity<?> enableAccount(Long userId) throws Exception {
+
+        try {
         Optional<User> optionalUser = userRepository.findById(userId);
 
         if (optionalUser.isPresent()) {
             User user = optionalUser.get();
-
-            //cambió el estado a 'e',preguntar si manejamos asi este estado
             user.setState(AVALIABLE);
-
-            //guardo en la bd
             userRepository.save(user);
-
-            return user;
-        } else {
-            return null; // El usuario no se encontró
+            return ResponseEntity.status(HttpStatus.OK).body("Cuenta Habilitada correctamente");
         }
+        }catch (Exception e){
+            throw  new Exception(e.getMessage());
+        }
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("El usuario no existe");
     }
 
-    public User getUserById(Long userId){
-        Optional<User> optionalUser = userRepository.findById(userId);
-        return optionalUser.orElse(null);
+    @Transactional(readOnly = true)
+    public User getUserById(Long userId) throws Exception {
+
+        try {
+            Optional<User> optionalUser = userRepository.findById(userId);
+            return optionalUser.orElse(null);
+        }catch (Exception e){
+        throw  new Exception(e.getMessage());
     }
+
+}
 
 
 
