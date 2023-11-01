@@ -81,6 +81,8 @@ public class ScooterControllerJPA {
         try {
             scooters.put("En uso",this.scooterService.getScooterByStatus(Scooter.IN_USE));
             scooters.put("En mantenimiento",this.scooterService.getScooterByStatus(Scooter.IN_MANTENIENCE));
+            scooters.put("disponibles",this.scooterService.getScooterByStatus(Scooter.AVALIABLE));
+            scooters.put("desabilitados",this.scooterService.getScooterByStatus(Scooter.DISABLED));
             return ResponseEntity.status(HttpStatus.OK).body(scooters);
         }
         catch (Exception e){

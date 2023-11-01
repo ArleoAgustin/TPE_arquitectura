@@ -6,7 +6,7 @@ import lombok.Data;
 import lombok.Getter;
 
 @Entity
- @Data
+@Data
 public class Scooter {
 
         public static final Character AVALIABLE = 'A';
