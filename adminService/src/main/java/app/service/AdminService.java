@@ -3,7 +3,6 @@ package app.service;
 import app.DTO.AdminDTO;
 
 import app.model.entities.Admin;
-import app.model.entities.Role;
 import app.repository.AdminRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -20,7 +19,6 @@ public class AdminService {
 
     private final AdminRepository adminRepository;
     private final RoleService roleService;
-
     private final RestTemplate restTemplate;
 
 //obtiene todos los admin
@@ -34,6 +32,7 @@ public class AdminService {
 
 //crea un admin nuevo
 
+    @Transactional
     public boolean save(Admin admin) throws Exception {
         try {
             if ((!adminRepository.existsById(admin.getDni())) && (roleService.existsRoleByName(admin.getRole()))){
@@ -46,6 +45,9 @@ public class AdminService {
         return false;
     }
 
+//agrega un rol
+
+    @Transactional
     public boolean addRol(String nameRol) throws Exception {
         try {
            return roleService.add(nameRol);
@@ -54,9 +56,10 @@ public class AdminService {
         }
     }
 
-    public List getAllRol(){
-        return roleService.getAllRol();
-    }
+//obtiene todos los roles
+
+    @Transactional(readOnly = true)
+    public List getAllRol(){return roleService.getAllRol();}
 
 //actualiza los datos de un administrador
 
@@ -64,11 +67,11 @@ public class AdminService {
     public AdminDTO update(Long idAdmin, Admin updateAdmin)throws Exception{
         try {
             Optional<Admin> existsAdmin = adminRepository.findById(idAdmin);
-            if (existsAdmin.isPresent()) {
+            if (existsAdmin.isPresent() && roleService.existsRoleByName(updateAdmin.getRole())) {
                 Admin admin = existsAdmin.get();
                 admin.setName(updateAdmin.getName());
                 admin.setLastName(updateAdmin.getLastName());
-             //   admin.setRole(updateAdmin.getRole());
+                admin.setRole(updateAdmin.getRole());
                 Admin updatAdmin = adminRepository.save(admin);
                 AdminDTO adminDTO = new AdminDTO(updatAdmin);
                 return adminDTO;
@@ -91,12 +94,13 @@ public class AdminService {
         return false;
     }
 
+//elimina un rol
 
-    public boolean deleteRol(Long idRol){
+    @Transactional
+    public boolean deleteRol(Long idRol){return roleService.delete(idRol);}
 
-        return roleService.delete(idRol);
-    }
 
+//convierte una lista de admin a adminDTO
 
     private List<AdminDTO> converToAdminDTO(List<Admin> admins){
 

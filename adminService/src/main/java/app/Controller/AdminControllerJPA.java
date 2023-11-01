@@ -27,6 +27,8 @@ public class AdminControllerJPA {
         }
     }
 
+//obtiene todos los roles
+
     @GetMapping("/getAllRol")
     public ResponseEntity<?> findAllRol() {
         try{
@@ -48,6 +50,8 @@ public class AdminControllerJPA {
             return  ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Error: no se pudo agregar el administrador");
         }
     }
+
+//agrega un rol
 
     @PostMapping("/addRol")
     public ResponseEntity<?> addRol(@RequestBody String nameRol){
@@ -72,6 +76,7 @@ public class AdminControllerJPA {
         }
     }
 
+//elimina un rol
 
     @DeleteMapping("/deleteRol/{id_rol}")
     public ResponseEntity<?> deleteRol(@PathVariable Long id_rol){
