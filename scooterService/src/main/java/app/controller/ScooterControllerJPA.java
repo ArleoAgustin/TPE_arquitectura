@@ -4,6 +4,8 @@ package app.controller;
 import app.DTOs.ScooterReportByKm;
 import app.model.Scooter;
 import app.service.ScooterService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -16,10 +18,12 @@ import java.util.List;
 @RestController
 @RequestMapping("scooter")
 @RequiredArgsConstructor
+@Tag(name = "Scooter", description = "Scooter services")
 public class ScooterControllerJPA {
 
     private final ScooterService scooterService;
 
+    @Operation(summary = "Get all scooters")
     @GetMapping("")
     public ResponseEntity<?> findAll() {
         List<Scooter> scooterList = this.scooterService.findAll();
@@ -29,6 +33,7 @@ public class ScooterControllerJPA {
         return ResponseEntity.status(HttpStatus.OK).body(scooterList);
     }
 
+    @Operation(summary = "Get scooters by ID")
     @GetMapping("/{id}")
     public ResponseEntity<?> getById(@PathVariable Long id) {
         Scooter result = scooterService.getById(id);
@@ -36,11 +41,13 @@ public class ScooterControllerJPA {
         return ResponseEntity.status(HttpStatus.OK).body(result);
     }
 
+    @Operation(summary = "Get scooters in maintenance")
     @GetMapping("/inMaintenance")
     public ResponseEntity<?> getScooterinMaintenance(){
         return ResponseEntity.status(HttpStatus.OK).body(scooterService.getScooterByStatus(Scooter.IN_MANTENIENCE));
     }
 
+    @Operation(summary = "Add scooter to maintenance")
     @PutMapping("/addScooterMaintenance/{id_scooter}")
     public ResponseEntity<?> addScooterToMaintenance(@PathVariable Long id_scooter){
         Scooter isChanged = (Scooter) scooterService.addScooterToMaintenance(id_scooter);
@@ -50,11 +57,13 @@ public class ScooterControllerJPA {
         else return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("no se pudo agregar a mantenimiento");
     }
 
+    @Operation(summary = "Remove scooter to maintenance")
     @PutMapping("/removeScooterMaintenance/{id_scooter}")
     public ResponseEntity<?> removeScooterToMaintenance(@PathVariable Long id_scooter){
         return ResponseEntity.status(HttpStatus.OK).body(scooterService.removeScooterOfMaintenance(id_scooter));
     }
 
+    @Operation(summary = "Add scooter")
     @PostMapping("")
     public ResponseEntity<?> addScooter(@RequestBody Scooter scooter){
         try{
@@ -65,6 +74,7 @@ public class ScooterControllerJPA {
         }
     }
 
+    @Operation(summary = "Delete scooter")
     @DeleteMapping("/{id}")
     public ResponseEntity<?> deleteScooter(@PathVariable Long id){
         try {
@@ -75,6 +85,21 @@ public class ScooterControllerJPA {
         }
     }
 
+    @Operation(summary = "Get cant scooters in maintenance vs avaliables")
+    @GetMapping("/inMantenianceVsAvaliable")
+    public ResponseEntity<?> inMantenianceVsAvaliable(){
+        HashMap<String,Integer> scooters = new HashMap<>();
+        try {
+            scooters.put("En mantenimiento", scooterService.getScooterByStatus(Scooter.IN_MANTENIENCE).size());
+            scooters.put("Disponibles", scooterService.getScooterByStatus(Scooter.AVALIABLE).size());
+            return ResponseEntity.status(HttpStatus.OK).body(scooters);
+        }
+        catch (Exception e){
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("servicio no disponible");
+        }
+    }
+
+    @Operation(summary = "Get scooters by status")
     @GetMapping("/byStatus")
     public ResponseEntity<?> getScootersByStatus(){
         HashMap<String,List<Scooter>> scooters = new HashMap<>();
@@ -90,9 +115,7 @@ public class ScooterControllerJPA {
         }
     }
 
-    /*generar un reporte de uso de monopatines por kilómetros para establecer si un monopatín requiere de mantenimiento.
-     Este reporte debe poder configurarse para incluir (o no) los tiempos de pausa*/
-
+    @Operation(summary = "Get scooters report for kms or kms/pauses")
     @GetMapping("/reportBykms/{kms}")
     public ResponseEntity<?> getReportForKms(@RequestParam Boolean include, @PathVariable double kms) {
         try {
@@ -108,6 +131,7 @@ public class ScooterControllerJPA {
 
     }
 
+    @Operation(summary = "Get scooters by ubication")
     @GetMapping("/getNearby")
     public ResponseEntity<?> getNearby(@RequestParam String ubication){
         try {
@@ -124,6 +148,7 @@ public class ScooterControllerJPA {
     }
 
 
+    @Operation(summary = "Get scooters by ids")
     @GetMapping("/getAllByIds")
     public ResponseEntity<?> getViajesPorIds(@RequestParam List<Long> ids) {
         if (ids != null && !ids.isEmpty()) {
