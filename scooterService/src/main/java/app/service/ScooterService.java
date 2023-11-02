@@ -27,8 +27,11 @@ public class ScooterService {
 
     public Scooter save(Scooter scooter) throws Exception {
         try {
-            Scooter s = scooterRepository.save(scooter);
-            return new Scooter(s);
+            Character state = scooter.getState();
+            if(state != Scooter.DISABLED && state != Scooter.IN_USE && state != Scooter.IN_MANTENIENCE) {
+                scooter.setState('A');
+            }
+            return scooterRepository.save(scooter);
         }
         catch (Exception e){
             throw  new Exception(e.getMessage());
