@@ -44,7 +44,6 @@ public class TravelContollerJPA {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Error: no se encontro el viaje");
     }
 
-//REVISAR
     @PostMapping("")
     public ResponseEntity<?> addTravel(@RequestParam Long userDNI, @RequestParam Long scooterId) {
 

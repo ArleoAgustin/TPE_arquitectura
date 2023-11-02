@@ -15,23 +15,19 @@ import java.util.Optional;
 @Service
 @RequiredArgsConstructor
 public class UserService {
-
+    public static final Character AVALIABLE = 'A';
+    public static final Character DISABLED = 'D';
 
     private final UserRepository userRepository;
     private final RestTemplate restTemplate;
-
-    public static final Character AVALIABLE = 'A';
-    public static final Character DISABLED = 'D';
 
     @Transactional(readOnly = true)
     public List<User> findAll(){
         return this.userRepository.findAll().stream().map(User::new).toList();
     }
 
-
     @Transactional
     public ResponseEntity<?> deleteUser(Long id) throws Exception {
-
         try {
             if (userRepository.existsById(id)) {
                 userRepository.deleteById(id);
@@ -58,7 +54,6 @@ public class UserService {
 
     @Transactional
     public ResponseEntity<?> disableAccount(Long userId) throws Exception {
-
         try {
             Optional<User> optionalUser = userRepository.findById(userId);
             if (optionalUser.isPresent()) {
@@ -67,27 +62,26 @@ public class UserService {
                 userRepository.save(user);
                 return ResponseEntity.status(HttpStatus.OK).body("Cuenta deshabilitada correctamente");
             }
-        }catch (Exception e){
+        }
+        catch (Exception e){
             throw  new Exception(e.getMessage());
         }
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("El usuario no existe");
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("El usuario no existe");
     }
-
-
 
     @Transactional
     public ResponseEntity<?> enableAccount(Long userId) throws Exception {
 
         try {
-        Optional<User> optionalUser = userRepository.findById(userId);
-
-        if (optionalUser.isPresent()) {
-            User user = optionalUser.get();
-            user.setState(AVALIABLE);
-            userRepository.save(user);
-            return ResponseEntity.status(HttpStatus.OK).body("Cuenta Habilitada correctamente");
+            Optional<User> optionalUser = userRepository.findById(userId);
+            if (optionalUser.isPresent()) {
+                User user = optionalUser.get();
+                user.setState(AVALIABLE);
+                userRepository.save(user);
+                return ResponseEntity.status(HttpStatus.OK).body("Cuenta Habilitada correctamente");
+            }
         }
-        }catch (Exception e){
+        catch (Exception e){
             throw  new Exception(e.getMessage());
         }
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("El usuario no existe");
@@ -95,17 +89,12 @@ public class UserService {
 
     @Transactional(readOnly = true)
     public User getUserById(Long userId) throws Exception {
-
         try {
             Optional<User> optionalUser = userRepository.findById(userId);
             return optionalUser.orElse(null);
-        }catch (Exception e){
-        throw  new Exception(e.getMessage());
+        }
+        catch (Exception e){
+            throw  new Exception(e.getMessage());
+        }
     }
-
-}
-
-
-
-
 }

@@ -1,11 +1,13 @@
 TPE PARTE 1
 
-#### Swagger links:
-    AdminService : http://localhost:8082/doc/swagger-ui/index.html
-    UserService : http://localhost:8081/doc/swagger-ui/index.html
+Swagger links:
+    AdminService : 
+    UserService :
     ScooterService : http://localhost:8083/doc/swagger-ui/index.html
-    TravelService : http://localhost:8084/doc/swagger-ui/index.html
-    StoppingService : http://localhost:8085/doc/swagger-ui/index.html
+    TravelService : 
+    StoppingService :
+    
+    
 
 Ejercicio 3
 

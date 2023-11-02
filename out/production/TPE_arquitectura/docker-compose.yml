@@ -1,0 +1,94 @@
+version: '3'
+
+services:
+
+#----------------------------------------SERVICIOS---------------------------------------------------------
+#ports services 
+  #user 8081
+  #admin 8082
+  #scooter 8083
+  #travel 8084
+  #stopping 8085
+
+#  user_service:
+#    ports:
+#      - "8081:8080"
+#    depends_on:
+#      - user_Db
+#    container_name: container_userService
+
+
+#  travel_service:
+#    build:
+#      context: ./
+#      dockerfile: Dockerfile-travelService
+#    ports:
+#      - "8084:8080"
+#    depends_on:
+#      - travel_Db
+#    container_name: container_travelService
+
+#  stopping_service:
+#    build:
+#      context: ./
+#      dockerfile: Dockerfile-stoppingService
+#    ports:
+#      - "8082:8080"
+#    depends_on:
+#      - stopping_Db
+#    container_name: container_stoppingService
+
+#  scooter_service:
+#    build:
+#      context: # Ruta al contexto de construcción (donde están los archivos para construir la imagen)
+#      dockerfile: Dockerfile-scooterService  # Nombre del archivo Dockerfile a utilizar
+#    ports:
+#      - "8083:8080"
+#    depends_on:
+#      - scooter_db
+#    container_name: container_scooterService
+#-----------------------------------------------BASES DE DATOS ---------------------------------------------
+  user_Db:
+    image: mysql:latest
+    ports:
+      - "3306:3306"
+    container_name: container_userDb
+    environment:
+      MYSQL_ROOT_PASSWORD: admin
+      MYSQL_DATABASE: userDb
+
+  travel_db:
+    image: mysql:latest
+    ports:
+      - "3307:3306"
+    container_name: container_travelDb
+    environment:
+      MYSQL_ROOT_PASSWORD: admin
+      MYSQL_DATABASE: travelDb
+
+  stopping_db:
+    image: mysql:latest
+    ports:
+      - "3308:3306"
+    container_name: container_stoppingDb
+    environment:
+      MYSQL_ROOT_PASSWORD: admin
+      MYSQL_DATABASE: stoppingDb
+
+  scooter_db:
+    image: mysql:latest
+    ports:
+      - "3309:3306"
+    container_name: container_scooterDb
+    environment:
+      MYSQL_ROOT_PASSWORD: admin
+      MYSQL_DATABASE: scooterDb
+
+  admin_db:
+    image: mysql:latest
+    ports:
+      - "3310:3306"
+    container_name: container_adminDb
+    environment:
+      MYSQL_ROOT_PASSWORD: admin
+      MYSQL_DATABASE: adminDb
