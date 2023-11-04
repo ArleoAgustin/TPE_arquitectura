@@ -37,16 +37,15 @@ services:
 #    depends_on:
 #      - stopping_Db
 #    container_name: container_stoppingService
+  scooter_service:
+    image: scooterservice:v1.0
+    ports:
+      - "8093:8083"
+    depends_on:
+      - scooter_db
+    container_name: container_scooterService
 
-#  scooter_service:
-#    build:
-#      context: # Ruta al contexto de construcción (donde están los archivos para construir la imagen)
-#      dockerfile: Dockerfile-scooterService  # Nombre del archivo Dockerfile a utilizar
-#    ports:
-#      - "8083:8080"
-#    depends_on:
-#      - scooter_db
-#    container_name: container_scooterService
+
 #-----------------------------------------------BASES DE DATOS ---------------------------------------------
   user_Db:
     image: mysql:latest

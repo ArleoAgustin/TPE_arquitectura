@@ -128,7 +128,6 @@ public class ScooterControllerJPA {
         catch (Exception e){
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("servicio no disponible");
         }
-
     }
 
     @Operation(summary = "Get scooters by ubication")
@@ -144,9 +143,7 @@ public class ScooterControllerJPA {
         catch (Exception e){
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("servicio no disponible");
         }
-
     }
-
 
     @Operation(summary = "Get scooters by ids")
     @GetMapping("/getAllByIds")
