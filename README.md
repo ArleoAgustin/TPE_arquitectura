@@ -4,7 +4,7 @@ TPE PARTE 1
     AdminService : http://localhost:8082/doc/swagger-ui/index.html
     UserService : http://localhost:8081/doc/swagger-ui/index.html
     ScooterService : http://localhost:8093/doc/swagger-ui/index.html
-    TravelService : http://localhost:8084/doc/swagger-ui/index.html
+    TravelService : http://localhost:8094/doc/swagger-ui/index.html
     StoppingService : http://localhost:8085/doc/swagger-ui/index.html
 
 Ejercicio 3

@@ -1,6 +1,9 @@
 version: '3'
 
-services:
+networks:
+  scooter_network:
+    driver: bridge
+
 
 #----------------------------------------SERVICIOS---------------------------------------------------------
 #ports services 
@@ -9,24 +12,6 @@ services:
   #scooter 8083
   #travel 8084
   #stopping 8085
-
-#  user_service:
-#    ports:
-#      - "8081:8080"
-#    depends_on:
-#      - user_Db
-#    container_name: container_userService
-
-
-#  travel_service:
-#    build:
-#      context: ./
-#      dockerfile: Dockerfile-travelService
-#    ports:
-#      - "8084:8080"
-#    depends_on:
-#      - travel_Db
-#    container_name: container_travelService
 
 #  stopping_service:
 #    build:
@@ -37,6 +22,28 @@ services:
 #    depends_on:
 #      - stopping_Db
 #    container_name: container_stoppingService
+services:
+
+  user_service:
+    image: userservice:v1.0
+    ports:
+      - "8091:8081"
+    depends_on:
+      - user_Db
+    container_name: container_userService
+    networks:
+      - scooter_network
+
+  travel_service:
+    image: travelservice:v1.0
+    ports:
+      - "8094:8084"
+    depends_on:
+      - travel_db
+    container_name: container_travelService
+    networks:
+      - scooter_network
+
   scooter_service:
     image: scooterservice:v1.0
     ports:
@@ -44,10 +51,11 @@ services:
     depends_on:
       - scooter_db
     container_name: container_scooterService
+    networks:
+      - scooter_network
 
-
-#-----------------------------------------------BASES DE DATOS ---------------------------------------------
-  user_Db:
+  #-----------------------------------------------BASES DE DATOS ---------------------------------------------
+  user_db:
     image: mysql:latest
     ports:
       - "3306:3306"
@@ -55,6 +63,8 @@ services:
     environment:
       MYSQL_ROOT_PASSWORD: admin
       MYSQL_DATABASE: userDb
+    networks:
+      - scooter_network
 
   travel_db:
     image: mysql:latest
@@ -64,6 +74,8 @@ services:
     environment:
       MYSQL_ROOT_PASSWORD: admin
       MYSQL_DATABASE: travelDb
+    networks:
+      - scooter_network
 
   stopping_db:
     image: mysql:latest
@@ -73,6 +85,8 @@ services:
     environment:
       MYSQL_ROOT_PASSWORD: admin
       MYSQL_DATABASE: stoppingDb
+    networks:
+      - scooter_network
 
   scooter_db:
     image: mysql:latest
@@ -82,6 +96,8 @@ services:
     environment:
       MYSQL_ROOT_PASSWORD: admin
       MYSQL_DATABASE: scooterDb
+    networks:
+      - scooter_network
 
   admin_db:
     image: mysql:latest
@@ -91,3 +107,5 @@ services:
     environment:
       MYSQL_ROOT_PASSWORD: admin
       MYSQL_DATABASE: adminDb
+    networks:
+      - scooter_network
