@@ -16,7 +16,7 @@ import java.util.HashMap;
 import java.util.List;
 
 @RestController
-@RequestMapping("scooter")
+@RequestMapping("api/scooter")
 @RequiredArgsConstructor
 @Tag(name = "Scooter", description = "Scooter services")
 public class ScooterControllerJPA {

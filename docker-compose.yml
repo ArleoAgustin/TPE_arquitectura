@@ -29,7 +29,7 @@ services:
     ports:
       - "8091:8081"
     depends_on:
-      - user_Db
+      - user_db
     container_name: container_userService
     networks:
       - scooter_network

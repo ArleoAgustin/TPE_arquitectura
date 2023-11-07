@@ -17,17 +17,6 @@ services:
 #      - user_Db
 #    container_name: container_userService
 
-
-#  travel_service:
-#    build:
-#      context: ./
-#      dockerfile: Dockerfile-travelService
-#    ports:
-#      - "8084:8080"
-#    depends_on:
-#      - travel_Db
-#    container_name: container_travelService
-
 #  stopping_service:
 #    build:
 #      context: ./
@@ -38,17 +27,25 @@ services:
 #      - stopping_Db
 #    container_name: container_stoppingService
 
-#  scooter_service:
-#    build:
-#      context: # Ruta al contexto de construcción (donde están los archivos para construir la imagen)
-#      dockerfile: Dockerfile-scooterService  # Nombre del archivo Dockerfile a utilizar
-#    ports:
-#      - "8083:8080"
-#    depends_on:
-#      - scooter_db
-#    container_name: container_scooterService
+  travel_service:
+    image: travelservice:v1.0.1
+    ports:
+      - "8094:8084"
+    depends_on:
+      - travel_db
+    container_name: container_travelService
+
+  scooter_service:
+    image: scooterservice:v1.0
+    ports:
+      - "8093:8083"
+    depends_on:
+      - scooter_db
+    container_name: container_scooterService
+
+
 #-----------------------------------------------BASES DE DATOS ---------------------------------------------
-  user_Db:
+  user_db:
     image: mysql:latest
     ports:
       - "3306:3306"

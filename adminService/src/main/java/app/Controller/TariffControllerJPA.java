@@ -13,7 +13,7 @@ import java.lang.reflect.Parameter;
 import java.util.List;
 
 @RestController
-@RequestMapping("tariff")
+@RequestMapping("api/tariff")
 @RequiredArgsConstructor
 public class TariffControllerJPA {
 
