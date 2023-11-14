@@ -6,7 +6,8 @@ networks:
 
 
 #----------------------------------------SERVICIOS---------------------------------------------------------
-#ports services 
+#ports services
+  #gateway 8080
   #user 8081
   #admin 8082
   #scooter 8083
@@ -22,37 +23,46 @@ networks:
 #    depends_on:
 #      - stopping_Db
 #    container_name: container_stoppingService
+#  gateway_service:
+  #    image: apigateway:v1.0
+  #    ports:
+  #      - "80:8080"
+  #    depends_on: [scooter_service,travel_service,user_service]
+  #    networks:
+  #      scooter_network:
+  #
+  #  user_service:
+  #    image: userservice:v1.0
+  #    ports:
+  #      - "8091:8081"
+  #    depends_on:
+  #      - user_db
+  #    container_name: container_userService
+  #    networks:
+  #      - scooter_network
+  #
+  #  travel_service:
+  #    image: travelservice:v1.0
+  #    ports:
+  #      - "8094:8084"
+  #    depends_on:
+  #      - travel_db
+  #    container_name: container_travelService
+  #    networks:
+  #      - scooter_network
+  #
+  #  scooter_service:
+  #    image: scooterservice:v1.0
+  #    ports:
+  #      - "8093:8083"
+  #    depends_on:
+  #      - scooter_db
+  #    container_name: container_scooterService
+  #    networks:
+  #      - scooter_network
+ 
+
 services:
-
-  user_service:
-    image: userservice:v1.0
-    ports:
-      - "8091:8081"
-    depends_on:
-      - user_db
-    container_name: container_userService
-    networks:
-      - scooter_network
-
-  travel_service:
-    image: travelservice:v1.0
-    ports:
-      - "8094:8084"
-    depends_on:
-      - travel_db
-    container_name: container_travelService
-    networks:
-      - scooter_network
-
-  scooter_service:
-    image: scooterservice:v1.0
-    ports:
-      - "8093:8083"
-    depends_on:
-      - scooter_db
-    container_name: container_scooterService
-    networks:
-      - scooter_network
 
   #-----------------------------------------------BASES DE DATOS ---------------------------------------------
   user_db:
