@@ -1,11 +1,12 @@
 package app.controllers;
 
-import app.DTO.AuthRequestDTO;
-import app.DTO.UserRequestDTO;
-import app.DTO.UserResponseDTO;
-import app.Security.JWTFilter;
-import app.Security.TokenProvider;
-import app.service.UserService;
+import app.Security.jwt.JWTFilter;
+import app.Security.jwt.TokenProvider;
+import app.dto.request.AuthRequestDTO;
+import app.dto.user.request.UserRequestDTO;
+import app.dto.user.response.UserResponseDTO;
+import app.service.AuthService;
+
 import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.validation.Valid;
 import lombok.Builder;
@@ -26,11 +27,11 @@ import java.util.List;
 @RestController
 @RequestMapping("/api")
 @RequiredArgsConstructor
-public class UserSecurityController {
+public class AuthController {
 
     private final TokenProvider tokenProvider;
     private final AuthenticationManagerBuilder authenticationManagerBuilder;
-    private final UserService userService;
+    private final AuthService authService;
 
     @GetMapping("/validate")
     public ResponseEntity<ValidateTokenDTO> validateGet() {
@@ -74,7 +75,7 @@ public class UserSecurityController {
     @PostMapping("/register")
     //@PreAuthorize( "hasAuthority( \"" + AuthorityConstant.ADMIN + "\" )" )
     public ResponseEntity<UserResponseDTO> register(@Valid @RequestBody UserRequestDTO request ){
-        final var newUser = this.userService.createUser( request );
+        final var newUser = this.authService.createUser( request );
         return new ResponseEntity<>( newUser, HttpStatus.CREATED );
     }
 

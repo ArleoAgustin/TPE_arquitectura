@@ -22,16 +22,7 @@ public class RouteConfig {
                                 f.filter( authFilter.apply( new AuthenticationFilter.Config() ) )
                         )
                         .uri("http://localhost:8081"))
-                .route("micro-a-product", r -> r.path( "/api/admin/products/**" )
-                        .filters( f ->
-                                f.filter( authFilter.apply( new AuthenticationFilter.Config() ) )
-                        )
-                        .uri("http://localhost:8082"))
-                .route("micro-a-product", r -> r.path("/api/products/**")
-                        .filters(f ->
-                                f.filter(authFilter.apply(new AuthenticationFilter.Config()))
-                        )
-                        .uri("http://localhost:8082"))
+
                 .build();
     }
 }

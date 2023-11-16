@@ -1,4 +1,4 @@
-package app.Security.exception;
+package app.Security.jwt.exception;
 
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;

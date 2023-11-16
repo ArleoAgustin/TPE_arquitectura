@@ -1,4 +1,4 @@
-package app.Security;
+package app.Security.jwt;
 
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.io.Decoders;
@@ -11,6 +11,7 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Component;
+
 import java.security.Key;
 import java.util.Arrays;
 import java.util.Collection;
@@ -82,7 +83,7 @@ public class TokenProvider {
             return true;
         } catch (ExpiredJwtException e) {
             throw new ExpiredJwtException( e.getHeader(), e.getClaims(), e.getMessage() );
-        } catch (UnsupportedJwtException | MalformedJwtException | IllegalArgumentException ignored) {
+        } catch (UnsupportedJwtException | MalformedJwtException | SignatureException | IllegalArgumentException ignored) {
 
         }
         return false;

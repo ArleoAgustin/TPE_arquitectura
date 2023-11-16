@@ -1,19 +1,19 @@
 package app.model;
 
-import app.DTO.UserRequestDTO;
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
+import app.dto.user.request.UserRequestDTO;
+import jakarta.persistence.*;
 import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
-
-import java.time.LocalDateTime;
+import java.io.Serializable;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 @Data
 @Entity
 @Getter
-public class User {
+public class User implements Serializable {
 
     @Id
     private Long dni;
@@ -27,6 +27,10 @@ public class User {
     @Setter
     @Column(nullable=false)
     private String lastName;
+
+    @Setter
+    @Column
+    private String userName;
 
 
     @Setter
@@ -58,6 +62,24 @@ public class User {
     @Column
     private String password;
 
+
+    @ManyToMany( fetch = FetchType.LAZY, cascade = CascadeType.PERSIST )
+    @JoinTable(
+            name = "rel_user__account",
+            joinColumns = @JoinColumn(name = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "account_id")
+    )
+    private Set<Account> accounts;
+
+    @ManyToMany( fetch = FetchType.LAZY, cascade = CascadeType.PERSIST )
+    @JoinTable(
+            name = "rel_user__authority",
+            joinColumns = @JoinColumn(name = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "authority_id")
+    )
+    private Set<Authority> authorities;
+
+
     public User() {
 
     }
@@ -84,6 +106,7 @@ public class User {
         this.startDate = user.getStartDate();
         this.state = user.getState();
         this.rol = user.getRol();
+        this.userName = user.getUserName();
 
     }
 
@@ -96,6 +119,15 @@ public class User {
         this.state = request.getState();
         this.numberPhone = request.getNumberPhone();
         this.startDate = request.getStartDate();
+        this.userName = request.getUserName();
+    }
+
+    public void setAccount(List accounts ){
+        this.accounts = new HashSet<>( accounts );
+    }
+
+    public void setAuthorities(List authorities ){
+        this.authorities = new HashSet<>( authorities );
     }
 
 

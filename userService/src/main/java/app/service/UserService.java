@@ -1,7 +1,10 @@
 package app.service;
 
-import app.DTO.UserRequestDTO;
-import app.DTO.UserResponseDTO;
+
+import app.dto.user.request.UserRequestDTO;
+import app.dto.user.response.UserResponseDTO;
+import app.repository.AccountRepository;
+import app.repository.AuthorityRepository;
 import app.repository.UserRepository;
 import app.model.User;
 import app.service.exceptions.EnumUserException;
@@ -24,13 +27,9 @@ public class UserService {
     public static final Character AVALIABLE = 'A';
     public static final Character DISABLED = 'D';
 
-    @Autowired
-  //  private final PasswordEncoder passwordEncoder;
-
     private final UserRepository userRepository;
     private final RestTemplate restTemplate;
-    //private final AccountRepository accountRepository;
-  //  private final AuthorityRepository authorityRepository;
+
 
 
     @Transactional(readOnly = true)
@@ -111,14 +110,5 @@ public class UserService {
     }
 
 
-    public UserResponseDTO createUser(UserRequestDTO request ) {
-        if( this.userRepository.existsUsersByEmailIgnoreCase( request.getEmail() ) )
-            throw new UserException( EnumUserException.already_exist, String.format("Ya existe un usuario con email ", request.getEmail() ) );
 
-        final var user = new User( request );
-        final var encryptedPassword =  request.getPassword();   //hashear
-        user.setPassword( encryptedPassword );
-        final var createdUser = this.userRepository.save( user );
-        return new UserResponseDTO( createdUser );
-    }
 }

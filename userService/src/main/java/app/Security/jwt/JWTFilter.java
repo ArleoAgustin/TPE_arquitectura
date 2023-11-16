@@ -1,9 +1,9 @@
-package app.Security;
+package app.Security.jwt;
 
-import app.Security.exception.ExpiredTokenException;
+
+import app.Security.jwt.exception.ExpiredTokenException;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.ServletRequest;
