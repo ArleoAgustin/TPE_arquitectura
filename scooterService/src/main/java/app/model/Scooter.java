@@ -1,42 +1,30 @@
 package app.model;
 
-
-import jakarta.persistence.*;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
 import lombok.Data;
-import lombok.Getter;
+import lombok.NoArgsConstructor;
+import org.springframework.data.mongodb.core.mapping.Document;
 
-@Entity
+@Document
 @Data
+@NoArgsConstructor
 public class Scooter {
 
-        public static final Character AVALIABLE = 'A';
-        public static final Character IN_USE = 'I';
-        public static final Character DISABLED = 'D';
-        public static final Character IN_MANTENIENCE = 'M';
+    public static final Character AVALIABLE = 'A';
+    public static final Character IN_USE = 'I';
+    public static final Character DISABLED = 'D';
+    public static final Character IN_MANTENIENCE = 'M';
 
-        @Getter
-        @Id
-        @GeneratedValue(strategy = GenerationType.IDENTITY)
-        private Long id;
-
-        @Getter
-        @Column(nullable = false)
-        private Character state;
-
-        @Getter
-        @Column(nullable = false)
-        private String ubication;
-
-         @Getter
-         @Column(nullable = false)
-         private Double km;
-
-         @Getter
-         @Column(nullable = false)
-         private Integer countTravel;
-
-         @Column
-         private Double timeInPause;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private String id;
+    private Character state;
+    private String ubication;
+    private Double km;
+    private Integer countTravel;
+    private Double timeInPause;
 
      public Scooter(Scooter scooter) {
      }
@@ -47,8 +35,6 @@ public class Scooter {
          this.countTravel = countTravel;
          this.ubication = ubication;
      }
-
-     public Scooter() {}
 
     public void setState(Character state) {
          this.state = state;
@@ -66,3 +52,4 @@ public class Scooter {
          this.countTravel = countTravel;
      }
  }
+

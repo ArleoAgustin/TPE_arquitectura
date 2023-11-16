@@ -109,6 +109,19 @@ services:
     networks:
       - scooter_network
 
+  scooter_mongo_db:
+    image: mongo:latest
+    ports:
+      - "27017:27017"
+    container_name: container_scooterMongoDb
+    environment:
+      MONGO_INITDB_DATABASE: scooterDb
+      MONGO_INITDB_ROOT_USERNAME: admin
+      MONGO_INITDB_ROOT_PASSWORD: scooterDb
+    networks:
+      - scooter_network
+
+
   admin_db:
     image: mysql:latest
     ports:

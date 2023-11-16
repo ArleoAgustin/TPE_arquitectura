@@ -3,6 +3,7 @@ package app.service;
 import app.DTOs.ScooterReportByKm;
 import app.model.Scooter;
 import app.repository.ScooterRepository;
+import lombok.Data;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -12,7 +13,7 @@ import org.springframework.web.client.RestTemplate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-
+@Data
 @Service
 @RequiredArgsConstructor
 public class ScooterService {
@@ -39,7 +40,7 @@ public class ScooterService {
     }
 
     @Transactional
-    public boolean delete(Long id){
+    public boolean delete(String id){
         if (scooterRepository.existsById(id)){
             scooterRepository.deleteById(id);
             return true;
@@ -48,7 +49,7 @@ public class ScooterService {
     }
 
     @Transactional
-    public Object addScooterToMaintenance(Long idScooter) {
+    public Object addScooterToMaintenance(String idScooter) {
         Optional<Scooter> scooter = scooterRepository.findById(idScooter);
         if(scooter.isPresent()){
             scooter.get().setState('M');
@@ -59,7 +60,7 @@ public class ScooterService {
     }
 
     @Transactional
-    public Object removeScooterOfMaintenance(Long idScooter) {
+    public Object removeScooterOfMaintenance(String idScooter) {
         Optional<Scooter> scooter = scooterRepository.findById(idScooter);
         if(scooter.isPresent()){
             scooter.get().setState('D');
@@ -69,7 +70,7 @@ public class ScooterService {
         return null;
     }
 
-    public Scooter getById(Long id) {
+    public Scooter getById(String id) {
         Optional<Scooter> result = this.scooterRepository.findById(id);
         return result.orElse(null);
     }
@@ -95,7 +96,7 @@ public class ScooterService {
         return this.scooterRepository.findAllByUbicationEquals(ubication);
     }
 
-    public List<Scooter> getListScooter(List<Long> ids_Scooters){
+    public List<Scooter> getListScooter(List<String> ids_Scooters){
         return scooterRepository.findAllByIdIn(ids_Scooters);
     }
 }

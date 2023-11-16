@@ -6,6 +6,7 @@ import app.model.Scooter;
 import app.service.ScooterService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import lombok.Data;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -14,7 +15,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-
+@Data
 @RestController
 @RequestMapping("api/scooter")
 @RequiredArgsConstructor
@@ -35,7 +36,7 @@ public class ScooterControllerJPA {
 
     @Operation(summary = "Get scooters by ID")
     @GetMapping("/{id}")
-    public ResponseEntity<?> getById(@PathVariable Long id) {
+    public ResponseEntity<?> getById(@PathVariable String id) {
         Scooter result = scooterService.getById(id);
         if(result == null)return ResponseEntity.status(HttpStatus.NO_CONTENT).body("no se encontro el monopatin");
         return ResponseEntity.status(HttpStatus.OK).body(result);
@@ -49,7 +50,7 @@ public class ScooterControllerJPA {
 
     @Operation(summary = "Add scooter to maintenance")
     @PutMapping("/addScooterMaintenance/{id_scooter}")
-    public ResponseEntity<?> addScooterToMaintenance(@PathVariable Long id_scooter){
+    public ResponseEntity<?> addScooterToMaintenance(@PathVariable String id_scooter){
         Scooter isChanged = (Scooter) scooterService.addScooterToMaintenance(id_scooter);
         if(isChanged != null){
             return ResponseEntity.status(HttpStatus.OK).build();
@@ -59,7 +60,7 @@ public class ScooterControllerJPA {
 
     @Operation(summary = "Remove scooter to maintenance")
     @PutMapping("/removeScooterMaintenance/{id_scooter}")
-    public ResponseEntity<?> removeScooterToMaintenance(@PathVariable Long id_scooter){
+    public ResponseEntity<?> removeScooterToMaintenance(@PathVariable String id_scooter){
         return ResponseEntity.status(HttpStatus.OK).body(scooterService.removeScooterOfMaintenance(id_scooter));
     }
 
@@ -76,7 +77,7 @@ public class ScooterControllerJPA {
 
     @Operation(summary = "Delete scooter")
     @DeleteMapping("/{id}")
-    public ResponseEntity<?> deleteScooter(@PathVariable Long id){
+    public ResponseEntity<?> deleteScooter(@PathVariable String id){
         try {
             return ResponseEntity.status(HttpStatus.NO_CONTENT).body(scooterService.delete(id));
         }
@@ -147,7 +148,7 @@ public class ScooterControllerJPA {
 
     @Operation(summary = "Get scooters by ids")
     @GetMapping("/getAllByIds")
-    public ResponseEntity<?> getViajesPorIds(@RequestParam List<Long> ids) {
+    public ResponseEntity<?> getViajesPorIds(@RequestParam List<String> ids) {
         if (ids != null && !ids.isEmpty()) {
             List<Scooter> scooters = scooterService.getListScooter(ids);
             if (!scooters.isEmpty()) {

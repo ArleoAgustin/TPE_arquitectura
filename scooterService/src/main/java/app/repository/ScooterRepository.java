@@ -1,26 +1,21 @@
 package app.repository;
 
-import app.DTOs.ScooterReportByKm;
 import app.model.Scooter;
-import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.jpa.repository.Query;
-import org.springframework.data.repository.query.Param;
+import org.springframework.data.mongodb.repository.MongoRepository;
+import org.springframework.data.mongodb.repository.Query;
 import org.springframework.stereotype.Repository;
 
-import java.util.Collection;
 import java.util.List;
-import java.util.Optional;
 
 @Repository
-public interface ScooterRepository extends JpaRepository<Scooter, Long>{
+public interface ScooterRepository extends MongoRepository<Scooter, String> {
 
     List<Scooter> findAllByStateIs(Character m);
     List<Scooter> findScootersByCountTravelIsGreaterThan(Integer i);
-
     List<Scooter> findAllByUbicationEquals(String ubication);
 
-    @Query("SELECT s FROM Scooter s WHERE s.km >= :kms ORDER BY s.km DESC")
-    List<Scooter> getAllOrderByCantKm(@Param("kms") double kms);
+    @Query("{ 'km' : { $gte : ?0 } }")
+    List<Scooter> getAllOrderByCantKm(double kms);
 
-    List<Scooter> findAllByIdIn(List<Long> scooterIds);
+    List<Scooter> findAllByIdIn(List<String> scooterIds); // Cambiado Long a String dependiendo del tipo de id en Scooter
 }
