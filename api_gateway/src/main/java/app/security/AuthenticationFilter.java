@@ -34,7 +34,7 @@ public class AuthenticationFilter extends AbstractGatewayFilterFactory<Authentic
 
             if( this.isSecured.test( request ) ) {
                 return webClientBuilder.build().get()
-                        .uri("http://localhost:8081/api/validate")
+                        .uri("http://localhost:8088/api/validate")
                         .header( _AuthHeader, bearerToken )
                         .retrieve().bodyToMono( ValidateTokenDTO.class )
                         .map( response -> {
