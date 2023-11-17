@@ -6,6 +6,7 @@ import app.dto.user.request.UserRequestDTO;
 import app.dto.user.response.UserResponseDTO;
 import app.security.jwt.JWTFilter;
 import app.security.jwt.TokenProvider;
+
 import app.service.UserService;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.validation.Valid;
@@ -28,6 +29,7 @@ import java.util.List;
 @RequestMapping( "/api" )
 @RequiredArgsConstructor
 public class authController {
+
     private final TokenProvider tokenProvider;
     private final AuthenticationManagerBuilder authenticationManagerBuilder;
     private final UserService userService;

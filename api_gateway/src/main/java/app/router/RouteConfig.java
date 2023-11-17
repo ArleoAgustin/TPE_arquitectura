@@ -36,6 +36,10 @@ public class RouteConfig {
                         .filters( f -> f.filter(
                                 authFilter.apply( new AuthenticationFilter.Config() ) ))
                         .uri("http://localhost:8085"))
+                .route("travel", r -> r.path( "/api/travel/**" )
+                        .filters( f -> f.filter(
+                                authFilter.apply( new AuthenticationFilter.Config() ) ))
+                        .uri("http://localhost:8084"))
                 .build();
     }
 }

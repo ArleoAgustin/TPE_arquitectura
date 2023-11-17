@@ -11,9 +11,9 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
-import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
@@ -36,8 +36,8 @@ public class HttpConfig {
         http.addFilterBefore( new JwtFilter( jwtParser ), UsernamePasswordAuthenticationFilter.class);
         http.csrf( AbstractHttpConfigurer::disable )
                 .authorizeRequests()
-                .requestMatchers( "api/stopping" ).hasAuthority( AuthorityConstants.ADMIN )
-                .requestMatchers( "api/stopping" ).hasAuthority( AuthorityConstants.USER )
+                .requestMatchers( "api/travel" ).hasAuthority( AuthorityConstants.ADMIN )
+                .requestMatchers( "api/travel" ).hasAuthority( AuthorityConstants.USER )
                 .anyRequest().authenticated();
         http.anonymous( AbstractHttpConfigurer::disable )
                 .sessionManagement( s -> s.sessionCreationPolicy( SessionCreationPolicy.STATELESS ) );

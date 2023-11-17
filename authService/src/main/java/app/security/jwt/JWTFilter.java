@@ -1,6 +1,5 @@
 package app.security.jwt;
 
-
 import app.security.jwt.exception.ExpiredTokenException;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;

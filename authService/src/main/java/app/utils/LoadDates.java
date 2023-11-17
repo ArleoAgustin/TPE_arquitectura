@@ -23,7 +23,9 @@ public class LoadDates {
         a1.setName(authority1);
         Authority a2 = new Authority();
         a2.setName(authority2);
-        this.userAuthRepository.save(a1);
-        this.userAuthRepository.save(a2);
+        if (!this.userAuthRepository.existsByName(authority1))
+            this.userAuthRepository.save(a1);
+        if (!this.userAuthRepository.existsByName(authority2))
+            this.userAuthRepository.save(a2);
     }
 }

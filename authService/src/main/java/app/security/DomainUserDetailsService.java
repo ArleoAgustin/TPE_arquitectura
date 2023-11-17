@@ -1,7 +1,7 @@
 package app.security;
 
-import app.model.AuthUser;
 import app.model.Authority;
+import app.model.AuthUser;
 import app.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;

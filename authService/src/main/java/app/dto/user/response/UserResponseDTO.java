@@ -7,13 +7,13 @@ import lombok.Data;
 @Data
 public class UserResponseDTO {
 
-    private final long dni;
+    private final Long id;
     private final String name;
     private final String lastName;
     private final String email;
 
     public UserResponseDTO( AuthUser authUser){
-        this.dni = authUser.getDni();
+        this.id = authUser.getId();
         this.name = authUser.getName();
         this.lastName = authUser.getLastName();
         this.email = authUser.getEmail();
