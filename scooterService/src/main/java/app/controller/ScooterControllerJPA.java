@@ -3,6 +3,7 @@ package app.controller;
 
 import app.DTOs.ScooterReportByKm;
 import app.model.Scooter;
+import app.security.AuthorityConstants;
 import app.service.ScooterService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -10,9 +11,9 @@ import lombok.Data;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 @Data
@@ -26,6 +27,7 @@ public class ScooterControllerJPA {
 
     @Operation(summary = "Get all scooters")
     @GetMapping("")
+    @PreAuthorize( "hasAnyAuthority(\"" + AuthorityConstants.USER + "\" , \"" + AuthorityConstants.ADMIN + "\")" )
     public ResponseEntity<?> findAll() {
         List<Scooter> scooterList = this.scooterService.findAll();
         if (scooterList.isEmpty()){
@@ -36,6 +38,7 @@ public class ScooterControllerJPA {
 
     @Operation(summary = "Get scooters by ID")
     @GetMapping("/{id}")
+    @PreAuthorize( "hasAnyAuthority(\"" + AuthorityConstants.USER + "\" , \"" + AuthorityConstants.ADMIN + "\")" )
     public ResponseEntity<?> getById(@PathVariable String id) {
         Scooter result = scooterService.getById(id);
         if(result == null)return ResponseEntity.status(HttpStatus.NO_CONTENT).body("no se encontro el monopatin");
@@ -44,12 +47,14 @@ public class ScooterControllerJPA {
 
     @Operation(summary = "Get scooters in maintenance")
     @GetMapping("/inMaintenance")
+    @PreAuthorize( "hasAnyAuthority(\"" + AuthorityConstants.USER + "\" , \"" + AuthorityConstants.ADMIN + "\")" )
     public ResponseEntity<?> getScooterinMaintenance(){
         return ResponseEntity.status(HttpStatus.OK).body(scooterService.getScooterByStatus(Scooter.IN_MANTENIENCE));
     }
 
     @Operation(summary = "Add scooter to maintenance")
     @PutMapping("/addScooterMaintenance/{id_scooter}")
+    @PreAuthorize( "hasAnyAuthority(\"" + AuthorityConstants.USER + "\" , \"" + AuthorityConstants.ADMIN + "\")" )
     public ResponseEntity<?> addScooterToMaintenance(@PathVariable String id_scooter){
         Scooter isChanged = (Scooter) scooterService.addScooterToMaintenance(id_scooter);
         if(isChanged != null){
@@ -60,12 +65,14 @@ public class ScooterControllerJPA {
 
     @Operation(summary = "Remove scooter to maintenance")
     @PutMapping("/removeScooterMaintenance/{id_scooter}")
+    @PreAuthorize( "hasAnyAuthority(\"" + AuthorityConstants.USER + "\" , \"" + AuthorityConstants.ADMIN + "\")" )
     public ResponseEntity<?> removeScooterToMaintenance(@PathVariable String id_scooter){
         return ResponseEntity.status(HttpStatus.OK).body(scooterService.removeScooterOfMaintenance(id_scooter));
     }
 
     @Operation(summary = "Add scooter")
     @PostMapping("")
+    @PreAuthorize( "hasAnyAuthority(\"" + AuthorityConstants.USER + "\" , \"" + AuthorityConstants.ADMIN + "\")" )
     public ResponseEntity<?> addScooter(@RequestBody Scooter scooter){
         try{
             return ResponseEntity.status(HttpStatus.OK).body(scooterService.save(scooter));
@@ -77,6 +84,7 @@ public class ScooterControllerJPA {
 
     @Operation(summary = "Delete scooter")
     @DeleteMapping("/{id}")
+    @PreAuthorize( "hasAnyAuthority(\"" + AuthorityConstants.USER + "\" , \"" + AuthorityConstants.ADMIN + "\")" )
     public ResponseEntity<?> deleteScooter(@PathVariable String id){
         try {
             return ResponseEntity.status(HttpStatus.NO_CONTENT).body(scooterService.delete(id));
@@ -88,6 +96,7 @@ public class ScooterControllerJPA {
 
     @Operation(summary = "Get cant scooters in maintenance vs avaliables")
     @GetMapping("/inMantenianceVsAvaliable")
+    @PreAuthorize( "hasAnyAuthority(\"" + AuthorityConstants.USER + "\" , \"" + AuthorityConstants.ADMIN + "\")" )
     public ResponseEntity<?> inMantenianceVsAvaliable(){
         HashMap<String,Integer> scooters = new HashMap<>();
         try {
@@ -102,6 +111,7 @@ public class ScooterControllerJPA {
 
     @Operation(summary = "Get scooters by status")
     @GetMapping("/byStatus")
+    @PreAuthorize( "hasAnyAuthority(\"" + AuthorityConstants.USER + "\" , \"" + AuthorityConstants.ADMIN + "\")" )
     public ResponseEntity<?> getScootersByStatus(){
         HashMap<String,List<Scooter>> scooters = new HashMap<>();
         try {
@@ -118,6 +128,7 @@ public class ScooterControllerJPA {
 
     @Operation(summary = "Get scooters report for kms or kms/pauses")
     @GetMapping("/reportBykms/{kms}")
+    @PreAuthorize( "hasAnyAuthority(\"" + AuthorityConstants.USER + "\" , \"" + AuthorityConstants.ADMIN + "\")" )
     public ResponseEntity<?> getReportForKms(@RequestParam Boolean include, @PathVariable double kms) {
         try {
             List<ScooterReportByKm> scooters = this.scooterService.getReportForKm(include, kms);
@@ -133,6 +144,7 @@ public class ScooterControllerJPA {
 
     @Operation(summary = "Get scooters by ubication")
     @GetMapping("/getNearby")
+    @PreAuthorize( "hasAnyAuthority(\"" + AuthorityConstants.USER + "\" , \"" + AuthorityConstants.ADMIN + "\")" )
     public ResponseEntity<?> getNearby(@RequestParam String ubication){
         try {
             List<Scooter> scooters = this.scooterService.getNearby(ubication);
@@ -148,6 +160,7 @@ public class ScooterControllerJPA {
 
     @Operation(summary = "Get scooters by ids")
     @GetMapping("/getAllByIds")
+    @PreAuthorize( "hasAnyAuthority(\"" + AuthorityConstants.USER + "\" , \"" + AuthorityConstants.ADMIN + "\")" )
     public ResponseEntity<?> getViajesPorIds(@RequestParam List<String> ids) {
         if (ids != null && !ids.isEmpty()) {
             List<Scooter> scooters = scooterService.getListScooter(ids);

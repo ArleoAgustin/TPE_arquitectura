@@ -2,10 +2,12 @@ package app.controllers;
 
 import app.model.Stopping;
 import app.model.classes.Scooter;
+import app.security.AuthorityConstants;
 import app.service.StoppingService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -20,6 +22,7 @@ public class StoppingControllerJPA {
 //obtiene todas las paradas
 
     @GetMapping("")
+    @PreAuthorize( "hasAnyAuthority(\"" + AuthorityConstants.USER + "\" , \"" + AuthorityConstants.ADMIN + "\")" )
     public ResponseEntity<?> findAll() {
         try{
             return ResponseEntity.status(HttpStatus.OK).body(stoppingService.findAll());
@@ -31,6 +34,7 @@ public class StoppingControllerJPA {
 //agrega una parada
 
     @PostMapping("")
+    @PreAuthorize( "hasAnyAuthority(\"" + AuthorityConstants.USER + "\" , \"" + AuthorityConstants.ADMIN + "\")" )
     public ResponseEntity<?> addStopping(@RequestBody Stopping stopping){
         try{
             return ResponseEntity.status(HttpStatus.OK).body(stoppingService.save(stopping));
@@ -44,6 +48,7 @@ public class StoppingControllerJPA {
 //elimina una parada
 
     @DeleteMapping("/{id_stopping}")
+    @PreAuthorize( "hasAnyAuthority(\"" + AuthorityConstants.USER + "\" , \"" + AuthorityConstants.ADMIN + "\")" )
     public ResponseEntity<?> deleteStopping(@PathVariable Long id_stopping){
         try {
             return ResponseEntity.status(HttpStatus.OK).body(stoppingService.delete(id_stopping));
@@ -56,6 +61,7 @@ public class StoppingControllerJPA {
 //Actualiza una parada
 
     @PutMapping("/{id_stopping}")
+    @PreAuthorize( "hasAnyAuthority(\"" + AuthorityConstants.USER + "\" , \"" + AuthorityConstants.ADMIN + "\")" )
     public ResponseEntity<?> updateStopping(@PathVariable Long id_stopping, @RequestBody Stopping updateStopping){
         try {
             return ResponseEntity.status(HttpStatus.OK).body(stoppingService.update(id_stopping,updateStopping));
@@ -68,6 +74,7 @@ public class StoppingControllerJPA {
 //agrega un monopatin a la parada
 
     @PostMapping("/addScooter/{id_stopping}")
+    @PreAuthorize( "hasAnyAuthority(\"" + AuthorityConstants.USER + "\" , \"" + AuthorityConstants.ADMIN + "\")" )
     public ResponseEntity<?> addScooter(@RequestBody Scooter scooter, @PathVariable Long id_stopping){
         try{
             return ResponseEntity.status(HttpStatus.OK).body(stoppingService.addScooter(id_stopping, scooter));

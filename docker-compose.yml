@@ -76,6 +76,17 @@ services:
     networks:
       - scooter_network
 
+  auth_db:
+    image: mysql:latest
+    ports:
+      - "3305:3306"
+    container_name: container_authDb
+    environment:
+      MYSQL_ROOT_PASSWORD: admin
+      MYSQL_DATABASE: authDb
+    networks:
+      - scooter_network
+
   travel_db:
     image: mysql:latest
     ports:

@@ -1,13 +1,11 @@
 package app.service;
 
-import app.DTO.UserRequestDTO;
-import app.DTO.UserResponseDTO;
+
+
 import app.repository.UserRepository;
 import app.model.User;
-import app.service.exceptions.EnumUserException;
-import app.service.exceptions.UserException;
+
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -24,13 +22,9 @@ public class UserService {
     public static final Character AVALIABLE = 'A';
     public static final Character DISABLED = 'D';
 
-    @Autowired
-  //  private final PasswordEncoder passwordEncoder;
-
     private final UserRepository userRepository;
-    private final RestTemplate restTemplate;
-    //private final AccountRepository accountRepository;
-  //  private final AuthorityRepository authorityRepository;
+    private final RestTemplate clienteUserRest;
+
 
 
     @Transactional(readOnly = true)
@@ -111,14 +105,5 @@ public class UserService {
     }
 
 
-    public UserResponseDTO createUser(UserRequestDTO request ) {
-        if( this.userRepository.existsUsersByEmailIgnoreCase( request.getEmail() ) )
-            throw new UserException( EnumUserException.already_exist, String.format("Ya existe un usuario con email ", request.getEmail() ) );
 
-        final var user = new User( request );
-        final var encryptedPassword =  request.getPassword();   //hashear
-        user.setPassword( encryptedPassword );
-        final var createdUser = this.userRepository.save( user );
-        return new UserResponseDTO( createdUser );
-    }
 }
