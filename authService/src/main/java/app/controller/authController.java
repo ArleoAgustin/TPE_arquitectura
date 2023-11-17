@@ -1,10 +1,12 @@
-package app.controllers;
+package app.controller;
 
-import app.DTO.AuthRequestDTO;
-import app.DTO.UserRequestDTO;
-import app.DTO.UserResponseDTO;
-import app.Security.JWTFilter;
-import app.Security.TokenProvider;
+
+import app.dto.request.AuthRequestDTO;
+import app.dto.user.request.UserRequestDTO;
+import app.dto.user.response.UserResponseDTO;
+import app.security.jwt.JWTFilter;
+import app.security.jwt.TokenProvider;
+
 import app.service.UserService;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.validation.Valid;
@@ -20,31 +22,33 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
+
 import java.util.List;
 
-
 @RestController
-@RequestMapping("/api")
+@RequestMapping( "/api" )
 @RequiredArgsConstructor
-public class UserSecurityController {
+public class authController {
 
     private final TokenProvider tokenProvider;
     private final AuthenticationManagerBuilder authenticationManagerBuilder;
     private final UserService userService;
 
+    // Valida el token y devuelve un JSON con nombre de usuario y sus autoridades.
     @GetMapping("/validate")
     public ResponseEntity<ValidateTokenDTO> validateGet() {
+        // Obtenemos el token del usuario a traves del header?
         final var user = SecurityContextHolder.getContext().getAuthentication();
+        // Pasamos a una lista los permisos que tenga el usaurio?
         final var authorities = user.getAuthorities().stream().map(GrantedAuthority::getAuthority).toList();
         return ResponseEntity.ok(
                 ValidateTokenDTO.builder()
-                        .username( user.getName() )
-                        .authorities( authorities )
-                        .isAuthenticated( true )
-                        .build()
+                    .username( user.getName() )
+                    .authorities( authorities )
+                    .isAuthenticated( true )
+                    .build()
         );
     }
-
     @Data
     @Builder
     public static class ValidateTokenDTO {
@@ -52,8 +56,6 @@ public class UserSecurityController {
         private String username;
         private List<String> authorities;
     }
-
-
 
     // INICIAR SESION
     @PostMapping("/authenticate")
@@ -68,17 +70,12 @@ public class UserSecurityController {
         return new ResponseEntity<>(new JWTToken(jwt), httpHeaders, HttpStatus.OK);
     }
 
-
-
-
     @PostMapping("/register")
-    //@PreAuthorize( "hasAuthority( \"" + AuthorityConstant.ADMIN + "\" )" )
+//    @PreAuthorize( "hasAuthority( \"" + AuthorityConstant.ADMIN + "\" )" )
     public ResponseEntity<UserResponseDTO> register(@Valid @RequestBody UserRequestDTO request ){
         final var newUser = this.userService.createUser( request );
         return new ResponseEntity<>( newUser, HttpStatus.CREATED );
     }
-
-
 
     static class JWTToken {
         private String idToken;

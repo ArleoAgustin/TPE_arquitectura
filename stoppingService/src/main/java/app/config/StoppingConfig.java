@@ -9,7 +9,6 @@ import org.springframework.web.client.RestTemplate;
 public class StoppingConfig {
 
     @Bean
-    @Primary
     public RestTemplate registrarTemplateStopping() {
         return new RestTemplate();
     }
