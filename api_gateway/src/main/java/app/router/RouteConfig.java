@@ -12,17 +12,30 @@ public class RouteConfig {
     @Bean
     public RouteLocator routes(RouteLocatorBuilder builder, AuthenticationFilter authFilter ) {
         return builder.routes()
-                .route("lll", r -> r.path("/api/authenticate" )
-                        .filters( f ->
-                                f.filter( authFilter.apply( new AuthenticationFilter.Config() ) )
-                        )
+                .route("auth", r -> r.path("/api/authenticate" )
+                        .uri("http://localhost:8088"))
+                .route("register", r -> r.path("/api/register" )
+                        .uri("http://localhost:8088"))
+                .route("user", r -> r.path( "/api/user/**" )
+                        .filters( f -> f.filter(
+                                authFilter.apply( new AuthenticationFilter.Config() ) ))
                         .uri("http://localhost:8081"))
-                .route("auth-service", r -> r.path("/api/register" )
-                        .filters( f ->
-                                f.filter( authFilter.apply( new AuthenticationFilter.Config() ) )
-                        )
-                        .uri("http://localhost:8081"))
-
+                .route("admin", r -> r.path( "/api/admin/**" )
+                        .filters( f -> f.filter(
+                                authFilter.apply( new AuthenticationFilter.Config() ) ))
+                        .uri("http://localhost:8082"))
+                .route("tariff", r -> r.path( "/api/tariff/**" )
+                        .filters( f -> f.filter(
+                                authFilter.apply( new AuthenticationFilter.Config() ) ))
+                        .uri("http://localhost:8082"))
+                .route("scooter", r -> r.path( "/api/scooter/**" )
+                        .filters( f -> f.filter(
+                                authFilter.apply( new AuthenticationFilter.Config() ) ))
+                        .uri("http://localhost:8083"))
+                .route("stopping", r -> r.path( "/api/stopping/**" )
+                        .filters( f -> f.filter(
+                                authFilter.apply( new AuthenticationFilter.Config() ) ))
+                        .uri("http://localhost:8085"))
                 .build();
     }
 }

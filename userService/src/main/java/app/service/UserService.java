@@ -1,16 +1,11 @@
 package app.service;
 
 
-import app.dto.user.request.UserRequestDTO;
-import app.dto.user.response.UserResponseDTO;
-import app.repository.AccountRepository;
-import app.repository.AuthorityRepository;
+
 import app.repository.UserRepository;
 import app.model.User;
-import app.service.exceptions.EnumUserException;
-import app.service.exceptions.UserException;
+
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -28,7 +23,7 @@ public class UserService {
     public static final Character DISABLED = 'D';
 
     private final UserRepository userRepository;
-    private final RestTemplate restTemplate;
+    private final RestTemplate clienteUserRest;
 
 
 

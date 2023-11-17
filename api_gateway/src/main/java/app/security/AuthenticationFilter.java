@@ -8,17 +8,18 @@ import org.springframework.http.server.reactive.ServerHttpRequest;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.stereotype.Component;
 import org.springframework.web.reactive.function.client.WebClient;
-
 import java.util.List;
 import java.util.function.Predicate;
 
+/**
+ * Authentication pre-filter for API gateway.
+ */
 @Component
 public class AuthenticationFilter extends AbstractGatewayFilterFactory<AuthenticationFilter.Config> {
 
     private static final String _AuthHeader = "Authorization";
-    List<String> excludedUrls = List.of( "api/authenticate" , "api/register");
+    List<String> excludedUrls = List.of( "api/authenticate" , "api/register", "api/validate");
     private final WebClient.Builder webClientBuilder;
-
 
     public AuthenticationFilter(WebClient.Builder webClientBuilder) {
         super(Config.class);
@@ -26,7 +27,7 @@ public class AuthenticationFilter extends AbstractGatewayFilterFactory<Authentic
     }
 
     @Override
-    public GatewayFilter apply(Config config ) {
+    public GatewayFilter apply( Config config ) {
         return (exchange, chain) -> {
             ServerHttpRequest request = exchange.getRequest();
             String bearerToken = request.getHeaders().getFirst( _AuthHeader );
@@ -57,4 +58,3 @@ public class AuthenticationFilter extends AbstractGatewayFilterFactory<Authentic
     public static class Config {}
 
 }
-
