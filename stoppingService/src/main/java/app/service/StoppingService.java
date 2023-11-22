@@ -6,9 +6,12 @@ import app.repository.StoppingRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -31,13 +34,13 @@ public class StoppingService {
 
 //agrega una parada
 
-    public boolean save(Stopping stopping) throws Exception {
-        try {
-            stoppingRepository.save(stopping);
-            return true;
-        } catch (Exception e) {
-            throw new Exception(e.getMessage());
-        }
+    public ResponseEntity<?> save(String ubication) {
+
+            Stopping newStopping = new Stopping();
+            newStopping.setUbication(ubication);
+            stoppingRepository.save(newStopping);
+            return ResponseEntity.status(HttpStatus.OK).body("Parada agregada correctamente");
+
     }
 
 //elimina una parada
@@ -70,11 +73,18 @@ public class StoppingService {
 
 //agrega un monopatin a una parada
 
-    public boolean addScooter(Long idStopping, Scooter scooter) {   //hacer
+    public ResponseEntity<?> addScooter(Long idStopping, Scooter scooter) {
 
+        Optional<Stopping> stoppingOptional = stoppingRepository.findById(idStopping);
 
-        return true;
-
+        if (stoppingOptional.isPresent()) {
+            Stopping stopping = stoppingOptional.get();
+            scooter.setUbication(stopping.getUbication());
+            stopping.addScooter(scooter);
+            stoppingRepository.save(stopping);
+            return ResponseEntity.status(HttpStatus.OK).body("Monopatin agregado");
+        }
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("No se pudo agregar el monopatin");
     }
 
 

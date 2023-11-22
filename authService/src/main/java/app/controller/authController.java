@@ -37,9 +37,8 @@ public class authController {
     // Valida el token y devuelve un JSON con nombre de usuario y sus autoridades.
     @GetMapping("/validate")
     public ResponseEntity<ValidateTokenDTO> validateGet() {
-        // Obtenemos el token del usuario a traves del header?
+
         final var user = SecurityContextHolder.getContext().getAuthentication();
-        // Pasamos a una lista los permisos que tenga el usaurio?
         final var authorities = user.getAuthorities().stream().map(GrantedAuthority::getAuthority).toList();
         return ResponseEntity.ok(
                 ValidateTokenDTO.builder()

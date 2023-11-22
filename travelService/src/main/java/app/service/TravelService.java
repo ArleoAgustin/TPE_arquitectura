@@ -54,16 +54,24 @@ public class TravelService {
     }
 
     @Transactional
-    public ResponseEntity<?> addTravel(Long userDNI, Long scooterId) {
+    public ResponseEntity<?> addTravel(Long userDNI, Long scooterId, String token) {
 
-        String userURL = "http://localhost:8081/user/"+ userDNI;
-        String scooterURL = "http://localhost:8083/scooter/"+scooterId;
-        String tariffURL = "http://localhost:8082/tariff/currentPrice";
+        String userURL = "http://localhost:8080/api/user/"+ userDNI;
+        String scooterURL = "http://localhost:8080/api/scooter/"+scooterId;
+        String tariffURL = "http://localhost:8080/api/tariff/currentPrice";
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.setBearerAuth(token);
+        HttpEntity<?> requestEntity = new HttpEntity<>(headers);
+
+        // RestTemplate con soporte para token de autorización
+        RestTemplate restTemplate = new RestTemplate();
+
 
         try {
-            User user = restTemplate.getForObject(userURL, User.class);
-            Scooter scooter = restTemplate.getForObject(scooterURL, Scooter.class);
-            Tariff tariff = restTemplate.getForObject(tariffURL,Tariff.class);
+            User user = restTemplate.exchange(userURL, HttpMethod.GET, requestEntity, User.class).getBody();
+            Scooter scooter = restTemplate.exchange(scooterURL, HttpMethod.GET, requestEntity, Scooter.class).getBody();
+            Tariff tariff = restTemplate.exchange(tariffURL, HttpMethod.GET, requestEntity, Tariff.class).getBody();
 
             if(user.getState().equals(User.AVALIABLE) && scooter.getState().equals(Scooter.AVALIABLE)) {
 
@@ -77,14 +85,21 @@ public class TravelService {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
         }
     }
-
     @Transactional(readOnly = true)
-    public List<Scooter> getScootersWithMoreThanTravelsInYear(Integer travels, Integer year) throws Exception {
+    public List<Scooter> getScootersWithMoreThanTravelsInYear(Integer travels, Integer year, String token) throws Exception {
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.setBearerAuth(token);
+        HttpEntity<?> requestEntity = new HttpEntity<>(headers);
+
+        // RestTemplate con soporte para token de autorización
+        RestTemplate restTemplate = new RestTemplate();
+
         try {
             List<Long> scootersId = this.travelRepository.findScootersWithMoreThanXTravelsInYear(travels, year);
 
             if (!scootersId.isEmpty()) {
-                String url = "http://localhost:8083/scooter/getAllByIds";
+                String url = "http://localhost:8080/api/scooter/getAllByIds";
                 URI targetUrl = UriComponentsBuilder.fromUriString(url)
                         .queryParam("ids", scootersId)
                         .build()
@@ -93,7 +108,7 @@ public class TravelService {
                 ResponseEntity<List<Scooter>> response = restTemplate.exchange(
                         targetUrl,
                         HttpMethod.GET,
-                        null,
+                        requestEntity, // Aquí se pasa la configuración del encabezado con el token
                         new ParameterizedTypeReference<List<Scooter>>() {}
                 );
 
@@ -102,8 +117,9 @@ public class TravelService {
                 } else {
                     return null;
                 }
-            }else
+            } else {
                 return new ArrayList<>();
+            }
         } catch (Exception e) {
             throw new Exception(e.getMessage());
         }

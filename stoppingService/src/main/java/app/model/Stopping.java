@@ -1,8 +1,9 @@
 package app.model;
 
+import app.model.classes.Scooter;
 import jakarta.persistence.*;
 import lombok.Data;
-import app.model.classes.Scooter;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -21,8 +22,8 @@ public class Stopping {
     private List<Scooter> scooters;
 
     public Stopping(String ubication) {
-        this.scooters = new ArrayList<>();
         this.ubication = ubication;
+        this.scooters = new ArrayList<>(); // Inicializa la lista en el constructor
     }
 
     public Stopping() {}
@@ -40,6 +41,9 @@ public class Stopping {
     }
 
     public void addScooter(Scooter scooter) {
+        if (this.scooters == null) {
+            this.scooters = new ArrayList<>();
+        }
         this.scooters.add(scooter);
     }
 }

@@ -17,7 +17,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class StoppingControllerJPA {
 
-    private StoppingService stoppingService;
+    private final StoppingService stoppingService;
 
 //obtiene todas las paradas
 
@@ -35,13 +35,10 @@ public class StoppingControllerJPA {
 
     @PostMapping("")
     @PreAuthorize( "hasAnyAuthority(\"" + AuthorityConstants.USER + "\" , \"" + AuthorityConstants.ADMIN + "\")" )
-    public ResponseEntity<?> addStopping(@RequestBody Stopping stopping){
-        try{
-            return ResponseEntity.status(HttpStatus.OK).body(stoppingService.save(stopping));
-        }
-        catch (Exception e){
-            return  ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Error: no se pudo agregar la parada");
-        }
+    public ResponseEntity<?> addStopping(@RequestParam String ubication){
+
+        return stoppingService.save(ubication);
+
     }
 
 
@@ -54,7 +51,7 @@ public class StoppingControllerJPA {
             return ResponseEntity.status(HttpStatus.OK).body(stoppingService.delete(id_stopping));
         }
         catch (Exception e){
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Error: no se pudo eliminar la parada");
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("No se pudo eliminar la parada");
         }
     }
 
@@ -76,11 +73,8 @@ public class StoppingControllerJPA {
     @PostMapping("/addScooter/{id_stopping}")
     @PreAuthorize( "hasAnyAuthority(\"" + AuthorityConstants.USER + "\" , \"" + AuthorityConstants.ADMIN + "\")" )
     public ResponseEntity<?> addScooter(@RequestBody Scooter scooter, @PathVariable Long id_stopping){
-        try{
-            return ResponseEntity.status(HttpStatus.OK).body(stoppingService.addScooter(id_stopping, scooter));
-        }
-        catch (Exception e){
-            return  ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Error: no se pudo agregar la parada");
-        }
+
+        return stoppingService.addScooter(id_stopping, scooter);
+
     }
 }

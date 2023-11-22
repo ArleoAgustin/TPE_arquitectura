@@ -17,6 +17,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class AdminControllerJPA {
 
+
     private final AdminService adminService;
 
 //obtiene todos los administradores

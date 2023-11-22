@@ -11,6 +11,8 @@ public class Scooter implements Serializable {
     private String ubication;
     private double kmsUsed;
 
+    public Scooter() {}
+
     public Scooter(Scooter s) {
         this.status = s.getStatus();
         this.ubication = s.getUbication();
